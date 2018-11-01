@@ -7,11 +7,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>
 
     <script th:src="@{/static/js/validate_fields.js}"></script>
-    <script th:src="@{/static/js/admin/user/user-service.js}"></script>
-    <script th:src="@{/static/js/admin/user/user-controller.js}"></script>
+    <script th:src="@{/static/js/admin/users/user-service.js}"></script>
+    <script th:src="@{/static/js/admin/users/user-controller.js}"></script>
 </head>
 <body>
-<header th:replace="fragments/header :: header(users, admin)"></header>
+<header th:replace="fragments/header :: header(user, admin)"></header>
 
 <div th:replace="fragments/card/user :: userFields('admin/users/')"></div>
 

@@ -29,11 +29,11 @@
 
                 <!--<div class="input-field" th:hidden="${action == 'my/'}"-->
                      <!--sec:authorize="hasRole('ROLE_ADMIN')">-->
-                    <!--<select id="ldaps" th:field="${user.idLdap}" name="idLdap">-->
+                    <!--<select id="ldaps" th:field="${user.idLdap}" firstName="idLdap">-->
                         <!--<option th:value="${null}">Внутренний</option>-->
                         <!--<option th:each="r : ${ldaps}"-->
                                 <!--th:value="${r.id}"-->
-                                <!--th:text="${r.name}"></option>-->
+                                <!--th:text="${r.firstName}"></option>-->
                     <!--</select>-->
                     <!--<label for="ldaps">Метод авторизации</label>-->
                 <!--</div>-->
@@ -42,22 +42,16 @@
                     <legend>Личная информация</legend>
                     <div class="col s6">
                         <div class="input-field">
-                            <input id="surname" name="surname" class="required validate"
-                                   maxlength="100" type="text"
-                                   th:field="${user.surname}"/>
-                            <label for="surname">Фамилия</label>
-                        </div>
-                        <div class="input-field">
-                            <input id="name" name="name" type="text"
+                            <input id="name" name="firstName" type="text"
                                    class="required validate" maxlength="100"
-                                   th:field="${user.name}"/>
+                                   th:field="${user.firstName}"/>
                             <label for="name">Имя</label>
                         </div>
                         <div class="input-field">
-                            <input id="second-name" name="secondName" type="text"
+                            <input id="second-name" name="lastName" type="text"
                                    maxlength="100"
-                                   th:field="${user.secondName}"/>
-                            <label for="second-name">Отчество</label>
+                                   th:field="${user.lastName}"/>
+                            <label for="second-name">Фамилия</label>
                         </div>
                     </div>
                     <div class="col s6">
@@ -68,9 +62,9 @@
                             <label for="login">Логин</label>
                         </div>
                         <div class="input-field">
-                            <input id="email" name="email" class="required validate email" maxlength="256"
+                            <input id="email" name="email" class="required validate email" maxlength="150"
                                    type="email"
-                                   th:field="${user.mail}"/>
+                                   th:field="${user.email}"/>
                             <label for="email">Электронная почта</label>
                         </div>
                         <div class="input-field" th:hidden="${action == 'my/'}"
@@ -92,11 +86,11 @@
                     </div>
                     <div class="buttons-area col s12">
                         <button onclick="UserController.block()"
-                                th:if="${action == 'admin/users/' && user.status != T(org.communis.javawebintro.enums.UserStatus).BLOCK}"
+                                th:if="${action == 'admin/user/' && user.status != T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
                                 type="button" class="waves-effect waves-light btn">Заблокировать
                         </button>
                         <button onclick="UserController.unblock()"
-                                th:if="${action == 'admin/users/' && user.status == T(org.communis.javawebintro.enums.UserStatus).BLOCK}"
+                                th:if="${action == 'admin/user/' && user.status == T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
                                 type="button" class="waves-effect waves-light btn">Разблокировать
                         </button>
                         <button type="submit" class="waves-effect waves-light btn">Cохранить</button>
@@ -111,16 +105,16 @@
             <form id="password-form" class="form-horizontal col s5" style="padding-right: 0" method="PATCH"
                   th:action="@{${action} + 'password'}">
                 <input type="hidden" name="id" th:field="${user.id}"/>
-                <fieldset class="full-height">
+                <fieldset>
                     <legend>Смена пароля</legend>
                     <div class="input-field">
                         <input type="password" id="password" name="password"
-                               class="required validate" maxlength="20"/>
+                               class="required validate" maxlength="32"/>
                         <label for="password">Новый пароль</label>
                     </div>
                     <div class="input-field">
                         <input type="password" id="confirmPassword" name="confirmPassword"
-                               class="required validate" maxlength="20"/>
+                               class="required validate" maxlength="32"/>
                         <label for="confirmPassword">Повторите пароль</label>
                     </div>
                     <div class="buttons-area">

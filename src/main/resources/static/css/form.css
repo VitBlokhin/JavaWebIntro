@@ -12,17 +12,17 @@
     margin: 15px auto;
 }
 
-.login-form {
+/*.login-form {
     margin: auto !important;
-}
+}*/
 
 .form-body {
     width: 1000px;
 }
 
-.login-form {
+/*.login-form {
     width: 40%;
-}
+}*/
 
 [type="checkbox"].filled-in:checked + label:after {
     top: 0;

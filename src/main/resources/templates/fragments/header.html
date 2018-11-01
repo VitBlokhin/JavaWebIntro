@@ -17,26 +17,24 @@
                      th:with="isAnonymous=${#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')}">
                     <a th:class="${isAnonymous ? 'not-clickable' : 'underline-link'}"
                        th:href="@{${isAnonymous ? '#' : '/my'}}">
-                            <span class="white-text name" th:text="${#authorization.expression('!hasRole(''ROLE_ANONYMOUS'')') ?
-                    #authentication.getPrincipal().getUser().getFio() : 'Анонимный пользователь'}"></span></a>
-                    <span sec:authorize="!hasRole('ROLE_ANONYMOUS')" class="white-text email not-clickable"
-                          th:text="${#authentication.getPrincipal().getUser().getMail()}">
+                            <span class="white-text name"
+                                  th:text="${#authorization.expression('!hasRole(''ROLE_ANONYMOUS'')') ?
+                    #authentication.getPrincipal().getUser().getFullName() : 'Анонимный пользователь'}">
+                            </span>
+                    </a>
+                    <span sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+                          class="white-text email not-clickable"
+                          th:text="${#authentication.getPrincipal().getUser().getEmail()}">
                         </span>
                     <a class="underline-link" th:href="@{/login}"
                        sec:authorize="hasRole('ROLE_ANONYMOUS')">Войти</a>
                 </div>
             </li>
-            <li th:class="${item == 'test1'} ? 'active' : ''" sec:authorize="hasRole('ROLE_ANONYMOUS')">
-                <a th:href="@{/test1}">Test 1</a>
-            </li>
-            <li th:class="${item == 'test2'} ? active : ''" sec:authorize="hasRole('ROLE_ANONYMOUS')">
-                <a th:href="@{/test2}">Test 2</a>
-            </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="divider"></div>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"
-                th:class="${item == 'users'} ? active : ''"><a th:href="@{/admin/users}">Пользователи</a></li>
+                th:class="${item == 'user'} ? active : ''"><a th:href="@{/admin/users}">Пользователи</a></li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"
                 th:class="${item == 'ldap'} ? active : ''"><a th:href="@{/admin/ldap}">LDAP</a></li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
@@ -53,12 +51,12 @@
             <ul class="tabs tabs-transparent">
                 <li class="tab">
                     <a th:class="${item == 'test1'} ? 'active' : ''" target="_self"
-                            th:href="@{/test1}">
+                       th:href="@{/test1}">
                         Test 1</a>
                 </li>
                 <li class="tab">
                     <a th:class="${item == 'test2'} ? 'active' : ''" target="_self"
-                            th:href="@{/test2}">
+                       th:href="@{/test2}">
                         Test 2</a>
                 </li>
             </ul>

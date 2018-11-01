@@ -30,10 +30,9 @@ public abstract class UserSpecification implements Specification<User>
                     {
                         predicates.add(cb.or(
                                 cb.like(cb.upper(root.get("login")), '%' + filter.getSearch().toUpperCase() + '%'),
-                                cb.like(cb.upper(root.get("mail")), '%' + filter.getSearch().toUpperCase() + '%'),
-                                cb.like(cb.upper(root.get("name")), '%' + filter.getSearch().toUpperCase() + '%'),
-                                cb.like(cb.upper(root.get("surname")), '%' + filter.getSearch().toUpperCase() + '%'),
-                                cb.like(cb.upper(root.get("secondName")), '%' + filter.getSearch().toUpperCase() + '%')));
+                                cb.like(cb.upper(root.get("email")), '%' + filter.getSearch().toUpperCase() + '%'),
+                                cb.like(cb.upper(root.get("firstName")), '%' + filter.getSearch().toUpperCase() + '%'),
+                                cb.like(cb.upper(root.get("lastName")), '%' + filter.getSearch().toUpperCase() + '%')));
                     }
                     if (filter.getRole() != null) {
                         predicates.add(cb.equal(root.get("role"), filter.getRole()));

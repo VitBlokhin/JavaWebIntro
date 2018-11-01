@@ -33,7 +33,7 @@ CREATE TABLE ldap_auth                            --// сущность для �
   FOREIGN KEY (user_attributes) REFERENCES ldap_user_attributes (id)
 );
 
-CREATE TABLE users
+CREATE TABLE user
 (
   id                  BIGINT AUTO_INCREMENT NOT NULL,                    -- // уникальный идентификатор
   login               CHARACTER VARYING NOT NULL UNIQUE,     -- // логин
@@ -52,12 +52,12 @@ CREATE TABLE users
   FOREIGN KEY (id_ldap) REFERENCES ldap_auth (id)
 );
 
-INSERT INTO users (login, surname, name, date_create, password, mail, status, role)
+INSERT INTO user (login, surname, name, date_create, password, mail, status, role)
 VALUES('root','Администратор', 'Администратор', CURRENT_TIMESTAMP,
        '$2a$10$LijUmixpYL0i9rRvwXrnX.heUijboQzE3PsoCrxuJANIDVX28FNjS',
        'admin@email', 'ACTIVE', 'ROLE_ADMIN');
 
-INSERT INTO users (login, surname, name, date_create, password, mail, status, role)
+INSERT INTO user (login, surname, name, date_create, password, mail, status, role)
 VALUES('operator','Оператор', 'Оператор', CURRENT_TIMESTAMP,
        '$2a$10$LijUmixpYL0i9rRvwXrnX.heUijboQzE3PsoCrxuJANIDVX28FNjS',
        'operator@email', 'ACTIVE', 'ROLE_OPERATOR');

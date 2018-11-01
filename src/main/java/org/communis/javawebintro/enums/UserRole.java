@@ -1,17 +1,18 @@
 package org.communis.javawebintro.enums;
 
 public enum UserRole {
-    ROLE_ADMIN {
-    },
-    ROLE_OPERATOR {
-    };
+    ROLE_ADMIN { },
+    ROLE_AUTHOR { },
+    ROLE_USER { };
 
     public String getStringName() {
         switch (this) {
             case ROLE_ADMIN:
                 return "Администратор";
-            case ROLE_OPERATOR:
-                return "Оператор";
+            case ROLE_AUTHOR:
+                return "Автор";
+            case ROLE_USER:
+                return "Пользователь";
             default:
                 return null;
         }

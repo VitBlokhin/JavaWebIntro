@@ -1,9 +1,5 @@
 package org.communis.javawebintro.config;
 
-import org.communis.javawebintro.config.ldap.CustomPerson;
-import org.communis.javawebintro.exception.ServerException;
-import org.communis.javawebintro.exception.error.ErrorCodeConstants;
-import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -39,9 +34,6 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     /**
      * Обработчик события успешной авторизации.
-     * Определяется тип аутентифицированного пользователя(ldap или БД).
-     * Если тип ldap, происходит обновлениие или внесение данных пользователя в БД
-     * и преобразование CustomPerson к UserDerailsImp.
      *
      * @param request
      * @param response
@@ -53,20 +45,10 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         if (!(authentication.getPrincipal() instanceof UserDetailsImp)) {
-            UserDetails principal = (CustomPerson) authentication.getPrincipal();
+            UserDetails principal = (UserDetails) authentication.getPrincipal();
             UserDetailsImp userDetailsImp;
             try {
-                try {
-                    UserDetailsImp userDetails = (UserDetailsImp) userService.loadUserByUsername(principal.getUsername());
-
-                    if(userDetails.getUser().getIdLdap() == null) {
-                        throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_EXIST_BD));
-                    }
-
-                    userDetailsImp = userService.updateUserFromLdap(userDetails.getUser().getId(), (CustomPerson) principal);
-                } catch (UsernameNotFoundException ex) {
-                    userDetailsImp = userService.addUserFromLdap((CustomPerson) principal);
-                }
+                userDetailsImp = (UserDetailsImp) userService.loadUserByUsername(principal.getUsername());
                 authentication = new UsernamePasswordAuthenticationToken(userDetailsImp,
                         authentication.getCredentials(), userDetailsImp.getAuthorities());
 
@@ -82,7 +64,7 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
             }
         }
 
-        userService.updateLastTimeOnline(((UserDetailsImp) authentication.getPrincipal()).getUser().getId());
+        userService.updateLastOnlineDate(((UserDetailsImp) authentication.getPrincipal()).getUser().getId());
 
         response.setStatus(HttpStatus.OK.value());
     }

@@ -1,15 +1,15 @@
 package org.communis.javawebintro.enums;
 
-public enum UserStatus {
+public enum ArticleStatus {
     ACTIVE,
     BLOCKED;
 
     public String getStringName() {
         switch (this) {
             case BLOCKED:
-                return "Заблокирован";
+                return "Заблокировано";
             case ACTIVE:
-                return "Активен";
+                return "Активно";
             default:
                 return null;
         }

@@ -6,16 +6,16 @@ import org.communis.javawebintro.enums.UserStatus;
 
 public class UserFilterWrapper extends ObjectFilter
 {
-    private String mail;
+    private String email;
     private UserRole role;
     private UserStatus status;
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String mail) {
+        this.email = mail;
     }
 
     public UserRole getRole() {

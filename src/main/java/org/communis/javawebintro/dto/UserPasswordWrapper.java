@@ -11,12 +11,12 @@ public class UserPasswordWrapper {
 
     @JsonIgnore
     @NotNull
-    @Size(min = 8, max = 20)
+    @Size(min = 8, max = 32)
     private String password;
 
     @JsonIgnore
     @NotNull
-    @Size(min = 8, max = 20)
+    @Size(min = 8, max = 32)
     private String confirmPassword;
 
     public UserPasswordWrapper() {

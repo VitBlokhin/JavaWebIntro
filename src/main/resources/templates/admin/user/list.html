@@ -11,7 +11,7 @@
     <script th:src="@{/static/js/filter.js}"></script>
 </head>
 <body>
-<header th:replace="fragments/header :: header(users, admin)"></header>
+<header th:replace="fragments/header :: header(user, admin)"></header>
 
 <div class="col s12 main-container">
     <form th:action="@{/admin/users}" method="get" th:object="${filter}">
@@ -60,9 +60,9 @@
             <tbody>
             <tr th:class="${user.isActive()} ? 'clickable' : 'clickable inactive-row'" th:each="user : ${page}"
                 th:onclick="'request(\'' + @{|/admin/users/${user.id}|}+ '\');'">
-                <td th:text="|${user.getFio()}|"></td>
+                <td th:text="|${user.getFullName()}|"></td>
                 <td th:text="${user.login}"></td>
-                <td th:text="${user.mail}"></td>
+                <td th:text="${user.email}"></td>
                 <td th:text="${user.role!=null ? user.role.getStringName() : ''}"></td>
                 <td th:text="|${#dates.format(user.dateLastOnline,'dd.MM.yyyy HH:mm')}|"></td>
                 <td th:text="${user.status.getStringName()}"></td>

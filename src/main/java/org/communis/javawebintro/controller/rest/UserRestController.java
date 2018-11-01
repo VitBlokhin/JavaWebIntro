@@ -33,7 +33,7 @@ public class UserRestController {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        userService.add(userWrapper);
+        userService.create(userWrapper);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
@@ -42,7 +42,7 @@ public class UserRestController {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        userService.edit(userWrapper);
+        userService.update(userWrapper);
     }
 
     @RequestMapping(value = "/password", method = RequestMethod.PATCH)

@@ -1,7 +1,6 @@
 package org.communis.javawebintro.config;
 
 import org.communis.javawebintro.dto.UserWrapper;
-import org.communis.javawebintro.enums.UserAction;
 import org.communis.javawebintro.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,17 +20,16 @@ public class UserDetailsImp implements UserDetails {
 
     private Set<GrantedAuthority> authorities;
 
-    public UserDetailsImp(UserWrapper user, List<UserAction> actions) {
-        if(user==null) {
+    public UserDetailsImp(UserWrapper user) {
+        if (user == null) {
             throw new NullPointerException("UserWrapper is NULL");
         }
         this.user = user;
 
         authorities = new HashSet<>();
-        if(user.getRole() != null)
+        if (user.getRole() != null) {
             authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
-
-        actions.forEach(a -> authorities.add(new SimpleGrantedAuthority(a.name())));
+        }
     }
 
     @Override
@@ -45,7 +43,7 @@ public class UserDetailsImp implements UserDetails {
     }
 
     @Override
-    public String getUsername () {
+    public String getUsername() {
         return user.getLogin();
     }
 
@@ -56,7 +54,7 @@ public class UserDetailsImp implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.getStatus() != UserStatus.BLOCK;
+        return user.getStatus() != UserStatus.BLOCKED;
     }
 
     @Override
