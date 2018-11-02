@@ -2,18 +2,31 @@ $(document).ready(function () {
     MaterializeUtils.materializeUpdate();
 });
 
+function getData(obj_form) {
+    var hData = {};
+    $('input, texarea, select', obj_form).each(function () {
+        if (this.name && this.name != '') {
+            hData[this.name] = this.value;
+            console.log('hData[' + this.name + '] = ' + hData[this.name]);
+        }
+    });
+    return hData;
+}
+
 function request(url) {
     window.location = url;
 }
 
-function requestPost(url, data, successFunction, contentType) {
+function requestPost(url, dataForm, successFunction, contentType) {
     $.ajax({
         method: "POST",
         url: url,
-        data: data,
+        data: getData(dataForm),
         contentType: contentType || "application/x-www-form-urlencoded",
         success: function (response) {
-            if (response.code === "OK") {
+            //TODO: проверить отработку
+            if (response.status === 200) {
+
                 successFunction(response);
             } else {
                 if (!$('#error-modal')) {
@@ -24,12 +37,17 @@ function requestPost(url, data, successFunction, contentType) {
             }
         },
         error: function (response) {
+            console.log(response);
             if (response.status === 403) {
                 response.message = "У вас нет доступа для совершения данной операции";
                 showErrorModal(response);
             }
             if (response.status === 500) {
                 response.message = "Ошибка на сервере";
+                showErrorModal(response);
+            }
+            if (response.status === 400) {
+                response.message = response.responseText;
                 showErrorModal(response);
             }
         }

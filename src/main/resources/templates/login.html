@@ -11,32 +11,34 @@
 </head>
 <body style="padding-top: 15px">
 <div th:replace="fragments/error :: errorModalFragment"></div>
-<div class="row">
-    <div class="col s10 m6 l4 offset-s1 offset-m3 offset-l4 login-form">
-        <div class="login-title">
-            <p>Java Web Intro</p>
-        </div>
-        <div class="login-body">
-            <form id="login-form" class="form-horizontal" th:action="@{/login}" method="post">
-                <div hidden id="error" class="input-field login-error">
-                    <i class="material-icons">error</i>
-                    <span></span>
-                </div>
-                <div class="input-field">
-                    <input placeholder="Имя пользователя *" id="username" type="text" name="username"
-                           autofocus="autofocus"
-                           class="validate required" maxlength="20"/>
-                    <label id="username-label" for="username"></label>
-                </div>
-                <div class="input-field">
-                    <input placeholder="Пароль *" id="password" type='password' name='password'
-                           class="validate required" maxlength="20"/>
-                    <label id="password-label" for="password"></label>
-                </div>
-                <div class="buttons-area">
-                    <button id="submit" type="submit" class="waves-effect waves-light btn">Вход</button>
-                </div>
-            </form>
+<div class="container">
+    <div class="row">
+        <div class="col s10 m6 l4 offset-s1 offset-m3 offset-l4 login-form">
+            <div class="login-title">
+                <p>Java Web Intro</p>
+            </div>
+            <div class="login-body">
+                <form id="login-form" class="form-horizontal" th:action="@{/login}" method="post">
+                    <div hidden id="error" class="input-field login-error">
+                        <i class="material-icons">error</i>
+                        <span></span>
+                    </div>
+                    <div class="input-field">
+                        <input placeholder="Имя пользователя *" id="username" type="text" name="username"
+                               autofocus="autofocus"
+                               class="validate required" maxlength="50"/>
+                        <label id="username-label" for="username"></label>
+                    </div>
+                    <div class="input-field">
+                        <input placeholder="Пароль *" id="password" type='password' name='password'
+                               class="validate required" maxlength="32"/>
+                        <label id="password-label" for="password"></label>
+                    </div>
+                    <div class="buttons-area">
+                        <button id="submit" type="submit" class="waves-effect waves-light btn">Вход</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

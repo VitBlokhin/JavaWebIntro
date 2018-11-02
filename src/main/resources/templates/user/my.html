@@ -7,13 +7,13 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>
 
     <script th:src="@{/static/js/validate_fields.js}"></script>
-    <script th:src="@{/static/js/admin/users/user-controller.js}"></script>
+    <script th:src="@{/static/js/admin/users/controller.js}"></script>
 </head>
 <body>
 
 <header th:replace="fragments/header :: header(my, user)"></header>
 
-<div th:replace="fragments/card/user :: userFields('my/')"></div>
+<div th:replace="fragments/card/user :: userFields('/my')"></div>
 
 <!--<div class="main-container">-->
     <!--<div class="main-content">-->

@@ -14,13 +14,13 @@ import java.util.Set;
 /**
  * Класс для представления данных пользователя из текущей сессии
  */
-public class UserDetailsImp implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private final UserWrapper user;
 
     private Set<GrantedAuthority> authorities;
 
-    public UserDetailsImp(UserWrapper user) {
+    public UserDetailsImpl(UserWrapper user) {
         if (user == null) {
             throw new NullPointerException("UserWrapper is NULL");
         }

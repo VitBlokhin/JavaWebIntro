@@ -1,6 +1,7 @@
 package org.communis.javawebintro.service.impls;
 
-import org.communis.javawebintro.config.UserDetailsImp;
+import org.communis.javawebintro.config.UserDetailsImpl;
+import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
@@ -16,7 +17,9 @@ import org.communis.javawebintro.utils.CredentialsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
@@ -48,10 +51,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page getPage(Pageable pageable, UserFilterWrapper filter) throws ServerException {
+    public PageWrapper<UserWrapper> getPage(UserFilterWrapper filter) throws ServerException {
         try {
-            return userRepository.findAll(UserSpecification.build(filter), pageable)
-                    .map(UserWrapper::new);
+            int pageNumber, pageSize;
+            try {
+                pageNumber = Integer.valueOf(filter.getPageNum());
+            } catch (NumberFormatException e) {
+                pageNumber = 0;
+            }
+            try {
+                pageSize = Integer.valueOf(filter.getSize());
+            } catch (NumberFormatException e) {
+                pageSize = 25;
+            }
+
+            Sort sortBy = new Sort(new Sort.Order(Sort.Direction.DESC, "login"));
+            Pageable pageable = new PageRequest(pageNumber, pageSize, sortBy);
+
+            return new PageWrapper<>(userRepository.findAll(UserSpecification.build(filter), pageable), UserWrapper::new);
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LIST_ERROR), ex);
         }
@@ -115,7 +132,7 @@ public class UserServiceImpl implements UserService {
             user.setStatus(UserStatus.BLOCKED);
             userRepository.save(user);
             Optional<Object> userPrincipal = sessionRegistry.getAllPrincipals().stream()
-                    .filter(p -> Objects.equals(((UserDetailsImp) p).getUser().getId(), user.getId()))
+                    .filter(p -> Objects.equals(((UserDetailsImpl) p).getUser().getId(), user.getId()))
                     .findFirst();
             userPrincipal.ifPresent(o -> sessionRegistry.getAllSessions(o, false)
                     .forEach(SessionInformation::expireNow));
@@ -145,7 +162,7 @@ public class UserServiceImpl implements UserService {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             UserWrapper user = userDetails.getUser();
             return getUser(user.getId());
         } catch (Exception ex) {
@@ -183,7 +200,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return userRepository.findFirstByLogin(login)
                 .map(UserWrapper::new)
-                .map(UserDetailsImp::new)
+                .map(UserDetailsImpl::new)
                 .orElseThrow(() -> new UsernameNotFoundException(ErrorCodeConstants.messages.get(ErrorCodeConstants.DATA_NOT_FOUND)));
     }
 

@@ -6,11 +6,11 @@
         <h4 class="col s12" th:text="${caption}"></h4>
     </div>
     <div class="row row-eq-height">
-        <div class="input-dataField col s8 no-padding">
-            <input type="text" name="search" maxlength="20" class="form-control" placeholder="Поиск"
+        <div class="input-dataField col m8">
+            <input type="text" name="search" maxlength="50" class="form-control" placeholder="Поиск"
                    th:dataField="*{search}">
         </div>
-        <div class="input-dataField col s4 filter-opts">
+        <div class="input-dataField col m4 filter-opts">
             <button id="submit-btn" type="submit" class="waves-effect waves-light btn">Поиск</button>
             <a th:href="@{${resetUrl}}" id="reset-btn" type="button" class="waves-effect waves-light btn btn-cancel">Сброс</a>
             <a class="btn filter-btn"><i class="material-icons">filter_list</i></a>

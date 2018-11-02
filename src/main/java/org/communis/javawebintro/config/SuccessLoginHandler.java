@@ -44,13 +44,13 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        if (!(authentication.getPrincipal() instanceof UserDetailsImp)) {
+        if (!(authentication.getPrincipal() instanceof UserDetailsImpl)) {
             UserDetails principal = (UserDetails) authentication.getPrincipal();
-            UserDetailsImp userDetailsImp;
+            UserDetailsImpl userDetailsImpl;
             try {
-                userDetailsImp = (UserDetailsImp) userService.loadUserByUsername(principal.getUsername());
-                authentication = new UsernamePasswordAuthenticationToken(userDetailsImp,
-                        authentication.getCredentials(), userDetailsImp.getAuthorities());
+                userDetailsImpl = (UserDetailsImpl) userService.loadUserByUsername(principal.getUsername());
+                authentication = new UsernamePasswordAuthenticationToken(userDetailsImpl,
+                        authentication.getCredentials(), userDetailsImpl.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -58,13 +58,13 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
                 sessionRegistry.getAllSessions(principal, false).forEach(SessionInformation::expireNow);
 
-                sessionRegistry.registerNewSession(sessionId, userDetailsImp);
+                sessionRegistry.registerNewSession(sessionId, userDetailsImpl);
             } catch (Exception ex) {
                 throw new ServletException(ex);
             }
         }
 
-        userService.updateLastOnlineDate(((UserDetailsImp) authentication.getPrincipal()).getUser().getId());
+        userService.updateLastOnlineDate(((UserDetailsImpl) authentication.getPrincipal()).getUser().getId());
 
         response.setStatus(HttpStatus.OK.value());
     }

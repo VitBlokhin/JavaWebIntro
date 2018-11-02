@@ -4,8 +4,7 @@ package org.communis.javawebintro.dto.filters;
 import org.communis.javawebintro.enums.UserRole;
 import org.communis.javawebintro.enums.UserStatus;
 
-public class UserFilterWrapper extends ObjectFilter
-{
+public class UserFilterWrapper extends ObjectFilter {
     private String email;
     private UserRole role;
     private UserStatus status;

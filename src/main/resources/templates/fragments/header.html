@@ -3,6 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml">
 
 <header th:fragment="header(item, user)">
+    <div class="navbar-fixed">
     <nav class="nav-extended">
         <div class="nav-wrapper">
             <a class="brand-logo center" th:href="@{/}">Java Web Intro</a>
@@ -34,9 +35,9 @@
                 <div class="divider"></div>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"
-                th:class="${item == 'user'} ? active : ''"><a th:href="@{/admin/users}">Пользователи</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"
-                th:class="${item == 'ldap'} ? active : ''"><a th:href="@{/admin/ldap}">LDAP</a></li>
+                th:class="${item == 'user'} ? active : ''">
+                <a th:href="@{/admin/users}">Пользователи</a>
+            </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="divider"></div>
             </li>
@@ -47,20 +48,20 @@
                 <a th:href="@{/logout}">Выход</a>
             </li>
         </ul>
-        <div class="nav-content row">
-            <ul class="tabs tabs-transparent">
-                <li class="tab">
-                    <a th:class="${item == 'test1'} ? 'active' : ''" target="_self"
-                       th:href="@{/test1}">
-                        Test 1</a>
-                </li>
-                <li class="tab">
-                    <a th:class="${item == 'test2'} ? 'active' : ''" target="_self"
-                       th:href="@{/test2}">
-                        Test 2</a>
-                </li>
-            </ul>
-        </div>
+        <!--<div class="nav-content row">-->
+            <!--<ul class="tabs tabs-transparent">-->
+                <!--<li class="tab">-->
+                    <!--<a th:class="${item == 'test1'} ? 'active' : ''" target="_self"-->
+                       <!--th:href="@{/test1}">-->
+                        <!--Test 1</a>-->
+                <!--</li>-->
+                <!--<li class="tab">-->
+                    <!--<a th:class="${item == 'test2'} ? 'active' : ''" target="_self"-->
+                       <!--th:href="@{/test2}">-->
+                        <!--Test 2</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
     </nav>
-
+    </div>
 </header>

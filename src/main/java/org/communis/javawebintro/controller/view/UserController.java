@@ -5,21 +5,27 @@ import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
 import org.communis.javawebintro.enums.UserRole;
 import org.communis.javawebintro.enums.UserStatus;
+import org.communis.javawebintro.exception.InvalidDataException;
 import org.communis.javawebintro.exception.ServerException;
+import org.communis.javawebintro.exception.error.ErrorCodeConstants;
+import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 @Log4j2
 @Controller
 @RequestMapping(value = "admin/users")
 public class UserController {
-    private String USER_VIEWS_PATH = "admin/user/";
+    private final String USER_VIEWS_PATH = "admin/user/";
 
     private final UserService userService;
 
@@ -32,7 +38,7 @@ public class UserController {
     public ModelAndView list(Pageable pageable, UserFilterWrapper filterUserWrapper) throws ServerException {
         ModelAndView usersPage = new ModelAndView(USER_VIEWS_PATH + "list");
         usersPage.addObject("filter", filterUserWrapper);
-        usersPage.addObject("page", userService.getPage(pageable, filterUserWrapper));
+        usersPage.addObject("page", userService.getPage(filterUserWrapper));
         prepareUserModelAndView(usersPage);
         return usersPage;
     }

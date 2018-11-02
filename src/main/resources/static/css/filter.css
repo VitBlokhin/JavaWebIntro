@@ -111,9 +111,9 @@ fieldset .date-group .form-group:not(.is-empty) input {
     text-align: center;
 }
 
-.page-info, .pagination-area {
-    margin-top: 25px;
-}
+/*.page-info, .pagination-area {*/
+    /*margin-top: 25px;*/
+/*}*/
 
 thead {
     background-color: white;

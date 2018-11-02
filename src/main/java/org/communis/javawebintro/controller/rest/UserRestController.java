@@ -28,7 +28,7 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public void add(@Valid UserWrapper userWrapper, BindingResult bindingResult) throws InvalidDataException, ServerException {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
@@ -37,7 +37,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
-    public void editPersonal(@Valid UserWrapper userWrapper, BindingResult bindingResult)
+    public void edit(@Valid UserWrapper userWrapper, BindingResult bindingResult)
             throws InvalidDataException, NotFoundException, ServerException {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));

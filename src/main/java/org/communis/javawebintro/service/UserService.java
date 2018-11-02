@@ -1,5 +1,6 @@
 package org.communis.javawebintro.service;
 
+import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
@@ -11,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
-    Page getPage(Pageable pageable, UserFilterWrapper filter) throws ServerException;
+    PageWrapper<UserWrapper> getPage(UserFilterWrapper filter) throws ServerException;
     void create(UserWrapper userWrapper) throws ServerException;
     UserWrapper getById(Long id) throws ServerException;
     void update(UserWrapper userWrapper) throws ServerException;
