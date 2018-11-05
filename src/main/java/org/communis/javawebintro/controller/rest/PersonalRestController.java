@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping(value = "/rest")
 public class PersonalRestController {
 
     private final PersonalService personalService;

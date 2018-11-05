@@ -26,10 +26,10 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             .antMatchers("/static/**", "/webjars/**", "/badbrowser").permitAll()
             .antMatchers("/public/**").permitAll()
-            .antMatchers("/admin/**").hasRole("ADMIN")
+            .antMatchers("/admin/**", "/rest/admin/**").hasRole("ADMIN")
             .antMatchers("/logout").authenticated()
             .antMatchers("/login").anonymous()
-            .antMatchers("/**").authenticated();
+            .antMatchers("/rest/**", "/**").authenticated();
         http.formLogin()
                 // указываем страницу с формой логина
                 .loginPage("/login")

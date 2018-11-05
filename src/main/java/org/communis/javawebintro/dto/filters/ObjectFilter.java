@@ -7,8 +7,8 @@ public class ObjectFilter {
     static final String DATE_FORMAT = "dd.MM.yyyy";
 
     private String search;
-    private String pageNum = "";
-    private String size = "50";
+    protected int page = 1;
+    protected int size = 3;
 
     public String getSearch() {
         return search;
@@ -18,19 +18,19 @@ public class ObjectFilter {
         this.search = search;
     }
 
-    public String getPageNum() {
-        return pageNum;
+    public int getPage() {
+        return page;
     }
 
-    public void setPageNum(String pageNum) {
-        this.pageNum = pageNum;
+    public void setPage(int page) {
+        this.page = page;
     }
 
-    public String getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(int size) {
         this.size = size;
     }
 

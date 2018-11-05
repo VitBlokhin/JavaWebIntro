@@ -11,39 +11,14 @@
 </head>
 <body>
 <header th:replace="fragments/header :: header(user, admin)"></header>
-<main class="container">
+<main>
     <div class="row">
         <div class="col s12">
             <div class="card-panel">
-                <form th:action="@{/admin/users}" method="get" th:object="${filter}">
-                    <div th:replace="fragments/filter :: filter('/admin/users/add', '/admin/users',  'Реестр пользователей')"></div>
-                    <div th:class="${'filter-content '+ (filter.isFilterExist() ? 'filter-open' : '')}">
-                        <div class="row row-eq-height">
-                            <div class="col s3">
-                                <div class="input-field select-form">
-                                    <select th:field="*{role}">
-                                        <option th:value="${null}">Все</option>
-                                        <option th:each="r : ${roles}"
-                                                th:value="${r.toString()}"
-                                                th:text="${r.getStringName()}"></option>
-                                    </select>
-                                    <label>Роль</label>
-                                </div>
-                            </div>
-                            <div class="col s3">
-                                <div class="input-field select-form">
-                                    <select th:field="*{status}">
-                                        <option th:value="${null}">Все</option>
-                                        <option th:each="s : ${statuses}"
-                                                th:value="${s.toString()}"
-                                                th:text="${s.getStringName()}"></option>
-                                    </select>
-                                    <label>Статус:</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div class="row caption">
+                    <h4 class="col s12" th:text="${'Реестр пользователей'}"></h4>
+                </div>
+                    <div th:replace="fragments/filter :: filter('/admin/users/add', '/admin/users')"></div>
             </div>
             <div class="card">
                 <table class="bordered responsive-table">
@@ -72,7 +47,7 @@
                 </table>
 
                 <div th:if="${page.total > 1}" class="card-content page-info">
-                    <div th:replace="fragments/pagination :: pagination"></div>
+                    <div th:replace="fragments/pagination :: pagination('/admin/users')"></div>
                 </div>
             </div>
         </div>

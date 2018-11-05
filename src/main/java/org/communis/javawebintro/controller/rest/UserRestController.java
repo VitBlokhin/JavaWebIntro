@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "admin/users")
+@RequestMapping(value = "rest/admin/users")
 public class UserRestController {
-
     private final UserService userService;
 
     @Autowired
@@ -29,39 +28,51 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public void add(@Valid UserWrapper userWrapper, BindingResult bindingResult) throws InvalidDataException, ServerException {
+    public String add(@Valid UserWrapper userWrapper, BindingResult bindingResult)
+            throws InvalidDataException, ServerException {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        userService.create(userWrapper);
+        return userService.create(userWrapper).toString();
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
-    public void edit(@Valid UserWrapper userWrapper, BindingResult bindingResult)
+    public String edit(@Valid UserWrapper userWrapper, BindingResult bindingResult)
             throws InvalidDataException, NotFoundException, ServerException {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        userService.update(userWrapper);
+        return userService.update(userWrapper).toString();
     }
 
     @RequestMapping(value = "/password", method = RequestMethod.PATCH)
-    public void changePassword(@Valid UserPasswordWrapper passwordWrapper, BindingResult bindingResult)
+    public String changePassword(@Valid UserPasswordWrapper passwordWrapper, BindingResult bindingResult)
             throws InvalidDataException, NotFoundException, ServerException {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        userService.changePassword(passwordWrapper);
+
+        return userService.changePassword(passwordWrapper).toString();
     }
 
     @RequestMapping(value = "/{id}/block", method = RequestMethod.POST)
-    public void block(@PathVariable("id") Long id)
+    public String block(@PathVariable("id") Long id)
             throws InvalidDataException, ServerException, NotFoundException {
-        userService.block(id);
+
+        return userService.block(id).toString();
     }
 
     @RequestMapping(value = "/{id}/unblock", method = RequestMethod.POST)
-    public void unblock(@PathVariable("id") Long id) throws NotFoundException, ServerException {
-        userService.unblock(id);
+    public String unblock(@PathVariable("id") Long id)
+            throws NotFoundException, ServerException {
+
+        return userService.unblock(id).toString();
+    }
+
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("id") Long id)
+            throws NotFoundException, ServerException {
+
+        userService.delete(id);
     }
 }

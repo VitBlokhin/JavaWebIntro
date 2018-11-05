@@ -2,7 +2,8 @@ package org.communis.javawebintro.enums;
 
 public enum UserStatus {
     ACTIVE,
-    BLOCKED;
+    BLOCKED,
+    DELETED;
 
     public String getStringName() {
         switch (this) {
@@ -10,6 +11,8 @@ public enum UserStatus {
                 return "Заблокирован";
             case ACTIVE:
                 return "Активен";
+            case DELETED:
+                return "Удалён";
             default:
                 return null;
         }

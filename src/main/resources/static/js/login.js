@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
     $("#login-form").ajaxForm({
         beforeSubmit: function (arr, $form, options) {
             return validateFields($form) != 0;

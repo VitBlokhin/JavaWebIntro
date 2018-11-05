@@ -4,7 +4,7 @@
 <div th:fragment="userFields(action)" class="form-body big-form">
     <div class="row">
         <div class="col s12">
-            <nav class="breadcrumb-nav" th:if="${action == 'admin/users/'}">
+            <nav class="breadcrumb-nav" th:if="${action == '/admin/users'}">
                 <div class="nav-wrapper">
                     <div class="col s12">
                         <a th:href="@{/admin/users}" class="breadcrumb">Реестр пользователей</a>
@@ -23,7 +23,7 @@
         </div>
     </div>
         <div class="row row-eq-height">
-            <form id="user-form" class="form-horizontal col s7" style="padding-left: 0" method="POST"
+            <form id="user-form" class="form-horizontal col s7" style="padding-left: 0" method="PATCH"
                   th:action="${action}">
 
                 <input type="hidden" name="id" th:field="${user.id}"/>
@@ -86,7 +86,8 @@
                                     th:if="${action == '/admin/users' && user.status == T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
                                     type="button" class="waves-effect waves-light btn">Разблокировать
                             </button>
-                            <button type="submit" class="waves-effect waves-light btn">Cохранить</button>
+                            <button onclick="UserController.edit()"
+                                    type="button" class="waves-effect waves-light btn">Cохранить</button>
                         </div>
                     </div>
                     <div class="row">
@@ -98,7 +99,7 @@
                 </fieldset>
             </form>
 
-            <form id="password-form" class="form-horizontal col s5" style="padding-right: 0" method="POST"
+            <form id="password-form" class="form-horizontal col s5" style="padding-right: 0" method="PATCH"
                   th:action="${action} + '/password'">
                 <input type="hidden" name="id" th:field="${user.id}"/>
                 <fieldset>
@@ -114,7 +115,8 @@
                         <label for="confirmPassword">Повторите пароль</label>
                     </div>
                     <div class="buttons-area">
-                        <button type="submit" class="waves-effect waves-light btn">Сменить пароль</button>
+                        <button  onclick="UserController.password()"
+                                type="button" class="waves-effect waves-light btn">Сменить пароль</button>
                     </div>
                     <div id="password-success">
                         <div th:replace="fragments/info :: successFragment"></div>

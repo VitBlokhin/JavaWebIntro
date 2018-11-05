@@ -6,6 +6,7 @@ import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
 import org.communis.javawebintro.entity.User;
+import org.communis.javawebintro.enums.ArticleStatus;
 import org.communis.javawebintro.enums.UserStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
@@ -54,18 +55,11 @@ public class UserServiceImpl implements UserService {
     public PageWrapper<UserWrapper> getPage(UserFilterWrapper filter) throws ServerException {
         try {
             int pageNumber, pageSize;
-            try {
-                pageNumber = Integer.valueOf(filter.getPageNum());
-            } catch (NumberFormatException e) {
-                pageNumber = 0;
-            }
-            try {
-                pageSize = Integer.valueOf(filter.getSize());
-            } catch (NumberFormatException e) {
-                pageSize = 25;
-            }
+            pageNumber = filter.getPage() - 1;
+            pageNumber = pageNumber < 0 ? 0 : pageNumber;
+            pageSize = filter.getSize();
 
-            Sort sortBy = new Sort(new Sort.Order(Sort.Direction.DESC, "login"));
+            Sort sortBy = new Sort(new Sort.Order(Sort.Direction.ASC, "login"));
             Pageable pageable = new PageRequest(pageNumber, pageSize, sortBy);
 
             return new PageWrapper<>(userRepository.findAll(UserSpecification.build(filter), pageable), UserWrapper::new);
@@ -75,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(UserWrapper userWrapper) throws ServerException {
+    public Long create(UserWrapper userWrapper) throws ServerException {
         try {
             User user = new User();
             userWrapper.fromWrapper(user);
@@ -87,8 +81,9 @@ public class UserServiceImpl implements UserService {
 
             user.setDateCreate(new Date());
             user.setStatus(UserStatus.ACTIVE);
+            user = userRepository.save(user);
 
-            userRepository.save(user);
+            return user.getId();
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -102,11 +97,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserWrapper userWrapper) throws ServerException {
+    public Long update(UserWrapper userWrapper) throws ServerException {
         try {
             User user = getUser(userWrapper.getId());
             userWrapper.fromWrapper(user);
-            userRepository.save(user);
+            user = userRepository.save(user);
+
+            return user.getId();
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -117,10 +114,37 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) throws ServerException {
 
+        try {
+            User user = getUser(id);
+
+            if (user == getCurrentUser()) {
+                throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_DELETE_SELF_ERROR));
+            }
+
+            Date date = new Date();
+            user.setDateBlock(date);
+            user.setStatus(UserStatus.DELETED);
+            //TODO: скрыть все сообщения пользователя (если есть)
+            user.getArticles().forEach(a -> {
+                a.setStatus(ArticleStatus.BLOCKED);
+                a.setDateClose(date);
+            });
+
+            userRepository.save(user);
+            Optional<Object> userPrincipal = sessionRegistry.getAllPrincipals().stream()
+                    .filter(p -> Objects.equals(((UserDetailsImpl) p).getUser().getId(), user.getId()))
+                    .findFirst();
+            userPrincipal.ifPresent(o -> sessionRegistry.getAllSessions(o, false)
+                    .forEach(SessionInformation::expireNow));
+        } catch (ServerException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_DELETE_ERROR), ex);
+        }
     }
 
     @Override
-    public void block(Long id) throws ServerException {
+    public Long block(Long id) throws ServerException {
         try {
             User user = getUser(id);
 
@@ -136,6 +160,8 @@ public class UserServiceImpl implements UserService {
                     .findFirst();
             userPrincipal.ifPresent(o -> sessionRegistry.getAllSessions(o, false)
                     .forEach(SessionInformation::expireNow));
+
+            return user.getId();
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -144,12 +170,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void unblock(Long id) throws ServerException {
+    public Long unblock(Long id) throws ServerException {
         try {
             User user = getUser(id);
             user.setDateBlock(null);
             user.setStatus(UserStatus.ACTIVE);
-            userRepository.save(user);
+            user = userRepository.save(user);
+
+            return user.getId();
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -171,12 +199,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(UserPasswordWrapper passwordWrapper) throws ServerException {
+    public Long changePassword(UserPasswordWrapper passwordWrapper) throws ServerException {
         try {
             User user = getUser(passwordWrapper.getId());
             setPassword(user, passwordWrapper);
+            user = userRepository.save(user);
 
-            userRepository.save(user);
+            return user.getId();
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -186,7 +215,7 @@ public class UserServiceImpl implements UserService {
 
     private User getUser(Long id) throws ServerException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
+                .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_INFO_ERROR)));
     }
 
     @Override

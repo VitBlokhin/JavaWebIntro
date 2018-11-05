@@ -1,11 +1,27 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns="http://www.w3.org/1999/xhtml">
-<div th:fragment="pagination" class="row">
+<div th:fragment="pagination(url)" class="row">
 
     <div class="col s12 pagination-area">
-        <!-- TODO -->
-        <ul class="pagination" sd:pagination="full">
+        <ul class="pagination">
+            <li th:class="${page.number <=  1} ? 'disabled' : 'waves-effect'">
+                <a href="#!" th:if="${page.number <= 1}"><i class="material-icons">chevron_left</i></a>
+                <a th:if="${page.number > 1}" th:href="@{${url} + '?page=' + ${page.number - 1}}">
+                    <i class="material-icons">chevron_left</i>
+                </a>
+            </li>
+            <li class="active">
+                <a href="#!">
+                    <span th:text="${filter.page}"></span>
+                </a>
+            </li>
+            <li th:class="${page.number >= page.total} ? 'disabled' : 'waves-effect'">
+                <a href="#!" th:if="${page.number >= page.total}"><i class="material-icons">chevron_right</i></a>
+                <a th:if="${page.number < page.total}" th:href="@{${url} + '?page=' + ${page.number + 1}}">
+                    <i class="material-icons">chevron_right</i>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "")
-    public ModelAndView list(Pageable pageable, UserFilterWrapper filterUserWrapper) throws ServerException {
+    public ModelAndView list(UserFilterWrapper filterUserWrapper) throws ServerException {
         ModelAndView usersPage = new ModelAndView(USER_VIEWS_PATH + "list");
         usersPage.addObject("filter", filterUserWrapper);
         usersPage.addObject("page", userService.getPage(filterUserWrapper));

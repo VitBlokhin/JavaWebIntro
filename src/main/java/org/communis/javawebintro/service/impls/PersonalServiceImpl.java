@@ -17,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = ServerException.class)
 public class PersonalServiceImpl implements PersonalService{
 
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public PersonalServiceImpl(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public PersonalServiceImpl(UserService userService) {
         this.userService = userService;
     }
 
@@ -31,14 +29,15 @@ public class PersonalServiceImpl implements PersonalService{
      *
      * @param userWrapper новая информация о пользователе
      */
-    public void edit(UserWrapper userWrapper) throws ServerException {
+    public Long edit(UserWrapper userWrapper) throws ServerException {
         try {
             User currentUser = userService.getCurrentUser();
+            userWrapper.setId(currentUser.getId());     // если в данных был передан неверный id
             userWrapper.setRole(currentUser.getRole());
             userWrapper.setStatus(currentUser.getStatus());
             userWrapper.fromWrapper(currentUser);
-            userRepository.save(currentUser);
 
+            return userService.update(userWrapper);
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR), ex);
         }
@@ -49,11 +48,12 @@ public class PersonalServiceImpl implements PersonalService{
      *
      * @param passwordWrapper инфомарция о пароле пользователя
      */
-    public void changePassword(UserPasswordWrapper passwordWrapper) throws ServerException {
+    public Long changePassword(UserPasswordWrapper passwordWrapper) throws ServerException {
         try {
             User currentUser = userService.getCurrentUser();
             passwordWrapper.setId(currentUser.getId());
-            userService.changePassword(passwordWrapper);
+
+            return userService.changePassword(passwordWrapper);
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR), ex);
         }

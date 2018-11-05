@@ -2,42 +2,37 @@ $(document).ready(function () {
     MaterializeUtils.materializeUpdate();
 });
 
-function getData(obj_form) {
-    var hData = {};
-    $('input, texarea, select', obj_form).each(function () {
-        if (this.name && this.name != '') {
-            hData[this.name] = this.value;
-            console.log('hData[' + this.name + '] = ' + hData[this.name]);
+function getData(form) {
+    var formData = {};
+    $('input, texarea, select', form).each(function () {
+            if (this.name && this.name != '') {
+                formData[this.name] = this.value;
+                //console.log('formData[' + this.name + '] = ' + formData[this.name]);
+            }
         }
-    });
-    return hData;
+    );
+    return formData;
 }
 
 function request(url) {
     window.location = url;
 }
 
-function requestPost(url, dataForm, successFunction, contentType) {
+// for non-GET requests with forms (POST, PUT, PATCH, DELETE)
+function sendRequest(form, url, successFunction, contentType) {
+    var data = getData(form);
+    var action = $(form).attr('action');
+    var method = $(form).attr('method');
+
     $.ajax({
-        method: "POST",
-        url: url,
-        data: getData(dataForm),
+        method: method || "POST",
+        url: url || '/rest' + action,
+        data: data,
         contentType: contentType || "application/x-www-form-urlencoded",
         success: function (response) {
-            //TODO: проверить отработку
-            if (response.status === 200) {
-
-                successFunction(response);
-            } else {
-                if (!$('#error-modal')) {
-                    showError(response);
-                } else {
-                    showErrorModal(response);
-                }
-            }
+            successFunction(response);
         },
         error: function (response) {
-            console.log(response);
             if (response.status === 403) {
                 response.message = "У вас нет доступа для совершения данной операции";
                 showErrorModal(response);
@@ -79,6 +74,10 @@ function showErrorModal(response) {
 
 function redirect(response) {
     window.location = response.data;
+}
+
+function reload() {
+    location.reload();
 }
 
 function showInfo(response) {
