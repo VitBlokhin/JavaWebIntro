@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
+    <title>Реестр категорий</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+
+    <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
+    <script th:src="@{/static/js/filter.js}"></script>
+</head>
+<body>
+<header th:replace="fragments/header :: header(user, admin)"></header>
+<main>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row caption">
+                    <h4 class="col s12" th:text="${'Реестр категорий'}"></h4>
+                </div>
+                <div th:replace="fragments/filter :: filter('/admin/categories', '/admin/categories/add')"></div>
+            </div>
+            <div class="card">
+                <table class="bordered responsive-table">
+                    <thead>
+                    <tr>
+                        <th>Название категории</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:class="'clickable'"
+                        th:each="category : ${page.items}"
+                        th:onclick="'request(\'' + @{|/admin/category/${category.id}|}+ '\');'">
+                        <td th:text="|${category.getName()}|"></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:if="${page.total > 1}" class="card-content page-info">
+                    <div th:replace="fragments/pagination :: pagination('/admin/categories')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

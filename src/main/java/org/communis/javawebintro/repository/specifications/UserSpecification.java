@@ -11,23 +11,18 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class UserSpecification implements Specification<User>
-{
-    private UserSpecification(){}
+public abstract class UserSpecification implements Specification<User> {
+    private UserSpecification() {
+    }
 
-    public static UserSpecification build(final UserFilterWrapper filter)
-    {
-        return new UserSpecification()
-        {
+    public static UserSpecification build(final UserFilterWrapper filter) {
+        return new UserSpecification() {
             @Override
-            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> cq, CriteriaBuilder cb)
-            {
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 final List predicates = new ArrayList();
 
-                if (filter != null)
-                {
-                    if (filter.getSearch() != null && !filter.getSearch().isEmpty())
-                    {
+                if (filter != null) {
+                    if (filter.getSearch() != null && !filter.getSearch().isEmpty()) {
                         predicates.add(cb.or(
                                 cb.like(cb.upper(root.get("login")), '%' + filter.getSearch().toUpperCase() + '%'),
                                 cb.like(cb.upper(root.get("email")), '%' + filter.getSearch().toUpperCase() + '%'),

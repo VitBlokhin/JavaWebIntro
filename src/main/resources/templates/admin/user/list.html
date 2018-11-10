@@ -18,7 +18,7 @@
                 <div class="row caption">
                     <h4 class="col s12" th:text="${'Реестр пользователей'}"></h4>
                 </div>
-                    <div th:replace="fragments/filter :: filter('/admin/users/add', '/admin/users')"></div>
+                <div th:replace="fragments/filter :: userFilter('/admin/users', '/admin/users/add')"></div>
             </div>
             <div class="card">
                 <table class="bordered responsive-table">

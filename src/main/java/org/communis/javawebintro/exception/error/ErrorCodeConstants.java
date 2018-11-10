@@ -33,6 +33,17 @@ public class ErrorCodeConstants {
     public static final ErrorCodeIdentifier USER_DELETE_ERROR = USER.branch("8");
     public static final ErrorCodeIdentifier USER_DELETE_SELF_ERROR = USER_DELETE_ERROR.branch("1");
 
+
+    public static final ErrorCodeIdentifier CATEGORY = new ErrorCodeIdentifier("2");
+    public static final ErrorCodeIdentifier CATEGORY_LIST_ERROR = CATEGORY.branch("1");
+    public static final ErrorCodeIdentifier CATEGORY_INFO_ERROR = CATEGORY.branch("2");
+
+    public static final ErrorCodeIdentifier CATEGORY_ADD_ERROR = CATEGORY.branch("3");
+    public static final ErrorCodeIdentifier CATEGORY_ALREADY_EXIST = CATEGORY_ADD_ERROR.branch("1");
+
+    public static final ErrorCodeIdentifier CATEGORY_UPDATE_ERROR = CATEGORY.branch("4");
+    public static final ErrorCodeIdentifier CATEGORY_DELETE_ERROR = CATEGORY.branch("5");
+
     static {
         messages.put(DATA_NOT_FOUND, "Ошибка при получении данных");
         messages.put(ACCESS_ERROR, "Доступ запрещен");
@@ -57,5 +68,12 @@ public class ErrorCodeConstants {
 
         messages.put(USER_DELETE_ERROR, "Ошибка при удалении пользователя");
         messages.put(USER_DELETE_SELF_ERROR, "Нельзя удалить себя");
+
+        messages.put(CATEGORY_LIST_ERROR, "Ошибка при получении реестра категорий");
+        messages.put(CATEGORY_INFO_ERROR, "Ошибка при получении категории");
+        messages.put(CATEGORY_ADD_ERROR, "Ошибка при добавлении категории");
+        messages.put(CATEGORY_ALREADY_EXIST, "Категория уже существует");
+        messages.put(CATEGORY_UPDATE_ERROR, "Ошибка при изменении категории");
+        messages.put(CATEGORY_DELETE_ERROR, "Ошибка при удалении категории");
     }
 }
