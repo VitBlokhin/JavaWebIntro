@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
             user.setDateCreate(new Date());
             user.setStatus(UserStatus.ACTIVE);
-            user = userRepository.save(user);
+            userRepository.save(user);
 
             return user.getId();
         } catch (ServerException ex) {
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         try {
             User user = getUser(userWrapper.getId());
             userWrapper.fromWrapper(user);
-            user = userRepository.save(user);
+            userRepository.save(user);
 
             return user.getId();
         } catch (ServerException ex) {
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
             User user = getUser(id);
             user.setDateBlock(null);
             user.setStatus(UserStatus.ACTIVE);
-            user = userRepository.save(user);
+            userRepository.save(user);
 
             return user.getId();
         } catch (ServerException ex) {
@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
         try {
             User user = getUser(passwordWrapper.getId());
             setPassword(user, passwordWrapper);
-            user = userRepository.save(user);
+            userRepository.save(user);
 
             return user.getId();
         } catch (ServerException ex) {

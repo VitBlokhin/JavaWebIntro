@@ -1,5 +1,6 @@
 package org.communis.javawebintro.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.communis.javawebintro.entity.User;
@@ -41,8 +42,13 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable {
     @Size(min = 8, max = 32)
     private String confirmPassword;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateLastOnline;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateOpen;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateClose;
     private UserStatus status;
     private UserRole role;

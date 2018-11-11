@@ -59,7 +59,7 @@ public class User {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "authorId", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Article> articles;
 
 
@@ -73,7 +73,7 @@ public class User {
 
     public void addArticle(Article article){
         getArticlesInternal().add(article);
-        article.setAuthor(this);
+        //article.setAuthor(this);
     }
 
     public void removeArticle(Article article){

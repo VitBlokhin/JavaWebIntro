@@ -1,7 +1,9 @@
 package org.communis.javawebintro.controller.rest;
 
+import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
+import org.communis.javawebintro.dto.filters.UserFilterWrapper;
 import org.communis.javawebintro.exception.InvalidDataException;
 import org.communis.javawebintro.exception.NotFoundException;
 import org.communis.javawebintro.exception.ServerException;
@@ -25,6 +27,17 @@ public class UserRestController {
     @Autowired
     public UserRestController(UserService userService) {
         this.userService = userService;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public PageWrapper<UserWrapper> list(UserFilterWrapper userFilterWrapper)
+            throws InvalidDataException, ServerException {
+        return userService.getPage(userFilterWrapper);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserWrapper editPage(@PathVariable("id") Long id) throws ServerException {
+        return userService.getById(id);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

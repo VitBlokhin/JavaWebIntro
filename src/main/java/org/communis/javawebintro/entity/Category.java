@@ -33,7 +33,7 @@ public class Category {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Article> articles;
 
     public Set<Article> getArticles() {
@@ -53,7 +53,7 @@ public class Category {
 
     public void addArticle(Article article){
         getArticlesInternal().add(article);
-        article.setCategory(this);
+        //article.setCategory(this);
     }
 
     public void removeArticle(Article article){

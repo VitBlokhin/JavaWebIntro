@@ -269,9 +269,13 @@ td input {
     margin-bottom: 4px;
 }
 
-.buttons-area .btn:not(:last-of-type) {
-    margin-right: 20px;
+.buttons-area .btn {
+    margin: 4px;
 }
+
+/*.buttons-area .btn:not(:last-of-type) {
+    margin-right: 20px;
+}*/
 
 .for-file-wrap {
     position: initial !important;

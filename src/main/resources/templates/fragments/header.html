@@ -40,10 +40,17 @@
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"
                 th:class="${item == 'category'} ? active : ''">
-                <a th:href="@{/admin/categories}">Категории</a>
+                <a th:href="@{/admin/categories}">Управление категориями</a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="divider"></div>
+            </li>
+            <li sec:authorize="hasRole('ROLE_AUTHOR')">
+                <a th:href="@{/articles/add}">Новое объявление</a>
+            </li>
+            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+                th:class="${item == 'categories'} ? active : ''">
+                <a th:href="@{/categories}">Категории</a>
             </li>
             <li sec:authorize="!hasRole('ROLE_ANONYMOUS')">
                 <div class="divider"></div>

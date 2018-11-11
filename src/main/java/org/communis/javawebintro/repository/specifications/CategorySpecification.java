@@ -31,6 +31,5 @@ public abstract class CategorySpecification implements Specification<Category> {
                 return predicate;
             }
         };
-
     }
 }

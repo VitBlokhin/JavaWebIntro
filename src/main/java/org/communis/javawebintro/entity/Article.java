@@ -1,6 +1,9 @@
 package org.communis.javawebintro.entity;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.communis.javawebintro.enums.ArticleStatus;
 
 import javax.persistence.*;
@@ -33,14 +36,61 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private ArticleStatus status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
-    private Category category;
+//    @Getter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
+//    private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
-    private User author;
+//    @Getter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
+//    private User author;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "AUTHOR_ID")
+    private Long authorId;
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "CATEGORY_ID")
+    private Long categoryId;
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    /*    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        category.addArticle(this);
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+        author.addArticle(this);
+    }*/
 
     @Override
     public boolean equals(Object o) {

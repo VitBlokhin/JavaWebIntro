@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
             return new PageWrapper<>(categoryRepository.findAll(CategorySpecification.build(filter), pageable), CategoryWrapper::new);
         } catch (Exception ex) {
-            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LIST_ERROR), ex);
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_LIST_ERROR), ex);
         }
     }
 
@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
 
             category.setDateCreate(new Date());
-            category = categoryRepository.save(category);
+            categoryRepository.save(category);
 
             return category.getId();
         } catch (ServerException ex) {
@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             Category category = getCategory(categoryWrapper.getId());
             categoryWrapper.fromWrapper(category);
-            category = categoryRepository.save(category);
+            categoryRepository.save(category);
 
             return category.getId();
         } catch (ServerException ex) {

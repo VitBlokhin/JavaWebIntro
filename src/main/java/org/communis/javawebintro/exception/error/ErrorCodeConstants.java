@@ -44,6 +44,19 @@ public class ErrorCodeConstants {
     public static final ErrorCodeIdentifier CATEGORY_UPDATE_ERROR = CATEGORY.branch("4");
     public static final ErrorCodeIdentifier CATEGORY_DELETE_ERROR = CATEGORY.branch("5");
 
+
+    public static final ErrorCodeIdentifier ARTICLE = new ErrorCodeIdentifier("3");
+    public static final ErrorCodeIdentifier ARTICLE_LIST_ERROR = ARTICLE.branch("1");
+    public static final ErrorCodeIdentifier ARTICLE_INFO_ERROR = ARTICLE.branch("2");
+
+    public static final ErrorCodeIdentifier ARTICLE_ADD_ERROR = ARTICLE.branch("3");
+    public static final ErrorCodeIdentifier ARTICLE_ALREADY_EXIST = ARTICLE_ADD_ERROR.branch("1");
+    public static final ErrorCodeIdentifier ARTICLE_AUTHOR_NOT_FOUND = ARTICLE_ADD_ERROR.branch("2");
+    public static final ErrorCodeIdentifier ARTICLE_CATEGORY_NOT_FOUND = ARTICLE_ADD_ERROR.branch("3");
+
+    public static final ErrorCodeIdentifier ARTICLE_UPDATE_ERROR = ARTICLE.branch("4");
+    public static final ErrorCodeIdentifier ARTICLE_DELETE_ERROR = ARTICLE.branch("5");
+
     static {
         messages.put(DATA_NOT_FOUND, "Ошибка при получении данных");
         messages.put(ACCESS_ERROR, "Доступ запрещен");

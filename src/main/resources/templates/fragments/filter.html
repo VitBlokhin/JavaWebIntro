@@ -3,19 +3,19 @@
         xmlns="http://www.w3.org/1999/xhtml">
 
 <!-- обычный фильтр -->
-<div th:fragment="filter(url, addUrl)" class="row caption">
+<div th:fragment="filter(url)" class="row caption">
     <form id="filter" th:action="${url}" method="get" th:object="${filter}">
         <div class="col s12 l8">
             <div th:replace="fragments/filter :: searchInput"></div>
         </div>
         <div th:replace="fragments/filter :: filterControls(${url})"></div>
     </form>
-    <div th:if="${addUrl != null}"
-         th:replace="fragments/filter :: addButton(${addUrl})"></div>
+    <!--<div th:if="${addUrl != null}"-->
+         <!--th:replace="fragments/filter :: addButton(${addUrl})"></div>-->
 </div>
 
 <!-- фильтр пользователя -->
-<div th:fragment="userFilter(url, addUrl)" class="row caption">
+<div th:fragment="userFilter(url)" class="row caption">
     <form id="filter" th:action="${url}" method="get" th:object="${filter}">
         <div class="col s12 l8">
             <div th:replace="fragments/filter :: searchInput"></div>
@@ -47,8 +47,8 @@
         </div>
         <div th:replace="fragments/filter :: filterControls(${url})"></div>
     </form>
-    <div th:if="${addUrl != null}"
-         th:replace="fragments/filter :: addButton(${addUrl})"></div>
+    <!--<div th:if="${addUrl != null}"-->
+         <!--th:replace="fragments/filter :: addButton(${addUrl})"></div>-->
 </div>
 
 <div th:fragment="searchInput" class="input-field col s12">

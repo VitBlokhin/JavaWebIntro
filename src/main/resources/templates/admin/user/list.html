@@ -18,7 +18,7 @@
                 <div class="row caption">
                     <h4 class="col s12" th:text="${'Реестр пользователей'}"></h4>
                 </div>
-                <div th:replace="fragments/filter :: userFilter('/admin/users', '/admin/users/add')"></div>
+                <div th:replace="fragments/filter :: userFilter('/admin/users')"></div>
             </div>
             <div class="card">
                 <table class="bordered responsive-table">
@@ -40,7 +40,7 @@
                         <td th:text="${user.login}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.role!=null ? user.role.getStringName() : ''}"></td>
-                        <td th:text="|${#dates.format(user.dateLastOnline,'dd.MM.yyyy HH:mm')}|"></td>
+                        <td th:text="|${#dates.format(user.dateLastOnline,'dd-MM-yyyy HH:mm')}|"></td>
                         <td th:text="${user.status.getStringName()}"></td>
                     </tr>
                     </tbody>
@@ -49,6 +49,8 @@
                 <div th:if="${page.total > 1}" class="card-content page-info">
                     <div th:replace="fragments/pagination :: pagination('/admin/users')"></div>
                 </div>
+
+                <div th:replace="fragments/filter :: addButton('/admin/users/add')"></div>
             </div>
         </div>
     </div>

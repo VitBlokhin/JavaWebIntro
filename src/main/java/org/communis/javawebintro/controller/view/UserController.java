@@ -35,10 +35,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "")
-    public ModelAndView list(UserFilterWrapper filterUserWrapper) throws ServerException {
+    public ModelAndView list(UserFilterWrapper userFilterWrapper) throws ServerException {
         ModelAndView usersPage = new ModelAndView(USER_VIEWS_PATH + "list");
-        usersPage.addObject("filter", filterUserWrapper);
-        usersPage.addObject("page", userService.getPage(filterUserWrapper));
+        usersPage.addObject("filter", userFilterWrapper);
+        usersPage.addObject("page", userService.getPage(userFilterWrapper));
         prepareUserModelAndView(usersPage);
         return usersPage;
     }

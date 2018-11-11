@@ -18,7 +18,7 @@
                 <div class="row caption">
                     <h4 class="col s12" th:text="${'Реестр категорий'}"></h4>
                 </div>
-                <div th:replace="fragments/filter :: filter('/admin/categories', '/admin/categories/add')"></div>
+                <div th:replace="fragments/filter :: filter('/admin/categories')"></div>
             </div>
             <div class="card">
                 <table class="bordered responsive-table">
@@ -43,6 +43,8 @@
                 <div th:if="${page.total > 1}" class="card-content page-info">
                     <div th:replace="fragments/pagination :: pagination('/admin/categories')"></div>
                 </div>
+
+                <div th:replace="fragments/filter :: addButton('/admin/categories/add')"></div>
             </div>
         </div>
     </div>

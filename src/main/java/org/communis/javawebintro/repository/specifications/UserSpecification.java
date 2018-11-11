@@ -41,5 +41,4 @@ public abstract class UserSpecification implements Specification<User> {
             }
         };
     }
-
 }

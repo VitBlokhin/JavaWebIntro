@@ -2,7 +2,9 @@ package org.communis.javawebintro.exception;
 
 import org.communis.javawebintro.exception.error.ErrorInformation;
 
-public class ServerException extends Exception {
+import java.util.function.Supplier;
+
+public class ServerException extends Exception{
     private final ErrorInformation errorInformation;
     private String causeMessage;
 
