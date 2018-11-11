@@ -27,7 +27,7 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public String add(@Valid UserWrapper userWrapper, BindingResult bindingResult)
             throws InvalidDataException, ServerException {
         if (bindingResult.hasErrors()) {
@@ -69,7 +69,7 @@ public class UserRestController {
         return userService.unblock(id).toString();
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id)
             throws NotFoundException, ServerException {
 

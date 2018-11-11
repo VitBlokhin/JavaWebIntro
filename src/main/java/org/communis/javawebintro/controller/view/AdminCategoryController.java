@@ -27,10 +27,10 @@ public class AdminCategoryController {
 
     @RequestMapping(value = "")
     public ModelAndView list(ObjectFilter filterWrapper) throws ServerException {
-        ModelAndView usersPage = new ModelAndView(CATEGORY_VIEWS_PATH + "list");
-        usersPage.addObject("filter", filterWrapper);
-        usersPage.addObject("page", categoryService.getPage(filterWrapper));
-        return usersPage;
+        ModelAndView categoriesPage = new ModelAndView(CATEGORY_VIEWS_PATH + "list");
+        categoriesPage.addObject("filter", filterWrapper);
+        categoriesPage.addObject("page", categoryService.getPage(filterWrapper));
+        return categoriesPage;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)

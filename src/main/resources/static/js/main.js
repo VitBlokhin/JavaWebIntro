@@ -18,15 +18,15 @@ function request(url) {
     window.location = url;
 }
 
-// for non-GET requests with forms (POST, PUT, PATCH, DELETE)
-function sendRequest(form, url, successFunction, contentType) {
+// api requests
+function sendRequest(form, url, method, successFunction, contentType) {
     var data = getData(form);
-    var action = $(form).attr('action');
-    var method = $(form).attr('method');
+    var action = url || $(form).attr('action');
+    var meth = method || $(form).attr('method');
 
     $.ajax({
-        method: method || "POST",
-        url: url || '/rest' + action,
+        method: meth || "GET",
+        url: '/rest' + action,
         data: data,
         contentType: contentType || "application/x-www-form-urlencoded",
         success: function (response) {

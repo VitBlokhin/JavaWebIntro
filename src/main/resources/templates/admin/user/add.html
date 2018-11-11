@@ -22,7 +22,7 @@
             </div>
         </div>
     </nav>
-    <form id="user-add-form" class="form-horizontal row" method="POST" th:action="${url}">
+    <form id="user-add-form" class="form-horizontal row" method="POST" th:action="${'/admin/users'}">
         <input type="hidden" name="id" th:field="${user.id}"/>
         <fieldset>
             <legend>Данные пользователя</legend>

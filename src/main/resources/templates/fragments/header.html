@@ -38,6 +38,10 @@
                 th:class="${item == 'user'} ? active : ''">
                 <a th:href="@{/admin/users}">Пользователи</a>
             </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"
+                th:class="${item == 'category'} ? active : ''">
+                <a th:href="@{/admin/categories}">Категории</a>
+            </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="divider"></div>
             </li>

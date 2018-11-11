@@ -5,26 +5,33 @@ $(document).ready(function () {
 UserController = {};
 
 UserController.addUser = function () {
-    sendRequest('#user-add-form', null, request);
+    //validateFields('#user-add-form');
+    sendRequest('#user-add-form', null, null, request);
 };
 
 UserController.edit = function () {
-    //var id = $('input[name="id"]').val();
-    sendRequest('#user-form', null, request);
+    //validateFields('#user-form');
+    sendRequest('#user-form', null, null, request);
 };
 
 UserController.password = function () {
-    sendRequest('#password-form', null, showSuccess);
+    //validateFields('#password-form');
+    sendRequest('#password-form', null, null, showSuccess);
 };
 
 UserController.block = function () {
     var id = $('input[name="id"]').val();
-    sendRequest(null, '/rest/admin/users/' + id + '/block', reload);
+    sendRequest(null, '/admin/users/' + id + '/block', 'POST', reload);
 };
 
 UserController.unblock = function () {
     var id = $('input[name="id"]').val();
-    sendRequest(null, '/rest/admin/users/' + id + '/unblock', reload);
+    sendRequest(null, '/admin/users/' + id + '/unblock', 'POST', reload);
+};
+
+UserController.delete = function () {
+    var id = $('input[name="id"]').val();
+    sendRequest(null, '/admin/users/' + id, 'DELETE', reload);
 };
 
 
