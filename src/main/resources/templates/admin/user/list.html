@@ -4,7 +4,7 @@
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
     <title>Реестр пользователей</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>-->
 
     <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
     <script th:src="@{/static/js/filter.js}"></script>
@@ -18,7 +18,7 @@
                 <div class="row caption">
                     <h4 class="col s12" th:text="${'Реестр пользователей'}"></h4>
                 </div>
-                <div th:replace="fragments/filter :: userFilter('/admin/users')"></div>
+                <div th:replace="fragments/filter :: filter('/admin/users')"></div>
             </div>
             <div class="card">
                 <table class="bordered responsive-table">
@@ -34,7 +34,7 @@
                     </thead>
                     <tbody>
                     <tr th:class="${user.isActive()} ? 'clickable' : 'clickable inactive-row'"
-                        th:each="user : ${page.items}"
+                        th:each="user : ${page}"
                         th:onclick="'request(\'' + @{|/admin/users/${user.id}|}+ '\');'">
                         <td th:text="|${user.getFullName()}|"></td>
                         <td th:text="${user.login}"></td>
@@ -46,12 +46,12 @@
                     </tbody>
                 </table>
 
-                <div th:if="${page.total > 1}" class="card-content page-info">
+                <div th:if="${page.totalPages > 1}" class="card-content">
                     <div th:replace="fragments/pagination :: pagination('/admin/users')"></div>
                 </div>
 
-                <div th:replace="fragments/filter :: addButton('/admin/users/add')"></div>
             </div>
+            <div th:replace="fragments/filter :: addButton('/admin/users/add')"></div>
         </div>
     </div>
 </main>

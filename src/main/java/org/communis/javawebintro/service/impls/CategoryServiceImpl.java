@@ -1,10 +1,8 @@
 package org.communis.javawebintro.service.impls;
 
 import org.communis.javawebintro.dto.CategoryWrapper;
-import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.filters.ObjectFilter;
 import org.communis.javawebintro.entity.Category;
-import org.communis.javawebintro.enums.ArticleStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
@@ -12,6 +10,7 @@ import org.communis.javawebintro.repository.CategoryRepository;
 import org.communis.javawebintro.repository.specifications.CategorySpecification;
 import org.communis.javawebintro.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("categoryService")
 @Transactional(rollbackFor = ServerException.class)
@@ -32,17 +33,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageWrapper<CategoryWrapper> getPage(ObjectFilter filter) throws ServerException {
+    public Page<CategoryWrapper> getPage(ObjectFilter filter) throws ServerException {
         try {
-            int pageNumber, pageSize;
-            pageNumber = filter.getPage() - 1;
-            pageNumber = pageNumber < 0 ? 0 : pageNumber;
-            pageSize = filter.getSize();
+            int pageNumber = (filter.getPage() < 1) ? 0 : filter.getPage();
+            int pageSize = filter.getSize();
 
             Sort sortBy = new Sort(new Sort.Order(Sort.Direction.ASC, "name"));
             Pageable pageable = new PageRequest(pageNumber, pageSize, sortBy);
 
-            return new PageWrapper<>(categoryRepository.findAll(CategorySpecification.build(filter), pageable), CategoryWrapper::new);
+            return categoryRepository.findAll(CategorySpecification.build(filter), pageable).map(CategoryWrapper::new);
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_LIST_ERROR), ex);
         }
@@ -81,8 +80,6 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.save(category);
 
             return category.getId();
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_UPDATE_ERROR), ex);
         }
@@ -97,16 +94,19 @@ public class CategoryServiceImpl implements CategoryService {
             category.setDateClose(date);
 
             category.getArticles().forEach(a -> {
-                // TODO: убрать категорию из обьявления или скрыть объявление?
+                // TODO: убрать категорию из обьявления или скрыть заметку?
                 //a.setStatus(ArticleStatus.HIDDEN);
             });
 
             categoryRepository.save(category);
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_DELETE_ERROR), ex);
         }
+    }
+
+    @Override
+    public List<CategoryWrapper> getAllActive() throws ServerException {
+        return categoryRepository.findAllByDateCloseIsNull().stream().map(CategoryWrapper::new).collect(Collectors.toList());
     }
 
     private Category getCategory(Long id) throws ServerException {

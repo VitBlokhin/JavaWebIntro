@@ -1,7 +1,6 @@
 package org.communis.javawebintro.service.impls;
 
 import org.communis.javawebintro.dto.ArticleWrapper;
-import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
 import org.communis.javawebintro.entity.Article;
 import org.communis.javawebintro.enums.ArticleStatus;
@@ -14,6 +13,7 @@ import org.communis.javawebintro.repository.specifications.ArticleSpecification;
 import org.communis.javawebintro.service.ArticleService;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,7 +28,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
-    //private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
@@ -41,19 +40,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageWrapper<ArticleWrapper> getPage(ArticleFilterWrapper filter) throws ServerException {
+    public Page<ArticleWrapper> getPage(ArticleFilterWrapper filter) throws ServerException {
         try {
-            int pageNumber, pageSize;
-            pageNumber = filter.getPage() - 1;
-            pageNumber = pageNumber < 0 ? 0 : pageNumber;
-            pageSize = filter.getSize();
+            int pageNumber = (filter.getPage() < 1) ? 0 : filter.getPage();
+            int pageSize = filter.getSize();
 
             Sort sortBy = new Sort(new Sort.Order(Sort.Direction.DESC, "dateCreate"));
             Pageable pageable = new PageRequest(pageNumber, pageSize, sortBy);
 
-            return new PageWrapper<>(articleRepository.findAll(ArticleSpecification.build(filter), pageable), ArticleWrapper::new);
+            return articleRepository.findAll(ArticleSpecification.build(filter), pageable).map(ArticleWrapper::new);
         } catch (Exception ex) {
-            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_LIST_ERROR), ex);
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_LIST_ERROR), ex);
         }
     }
 
@@ -61,19 +58,13 @@ public class ArticleServiceImpl implements ArticleService {
     public Long create(ArticleWrapper articleWrapper) throws ServerException {
         try {
             final Article article = new Article();
-            articleWrapper.fromWrapper(article);
             if (articleRepository.findFirstByTitleAndContent(article.getTitle(), article.getContent()).isPresent()) {
                 throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_ALREADY_EXIST));
             }
 
-            //categoryRepository.findById(articleWrapper.getCategoryId()).ifPresent(c -> c.addArticle(article));
+            articleWrapper.fromWrapper(article);
 
-            //article.setCategoryId(
             categoryRepository.findById(articleWrapper.getCategoryId()).ifPresent(c -> article.setCategoryId(c.getId()));
-//                    .orElseThrow(() -> new ServerException(
-//                                    ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_CATEGORY_NOT_FOUND)
-//                            ));
-            //);
 
             article.setAuthorId(userService.getCurrentUser().getId());
 
@@ -102,8 +93,6 @@ public class ArticleServiceImpl implements ArticleService {
             article = articleRepository.save(article);
 
             return article.getId();
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_UPDATE_ERROR), ex);
         }
@@ -116,12 +105,53 @@ public class ArticleServiceImpl implements ArticleService {
 
             Date date = new Date();
             article.setDateClose(date);
+            article.setStatus(ArticleStatus.DELETED);
 
             articleRepository.save(article);
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_DELETE_ERROR), ex);
+        }
+    }
+
+    @Override
+    public Long show(Long id) throws ServerException {
+        try {
+            Article article = getArticle(id);
+
+            article.setStatus(ArticleStatus.SHOWN);
+            articleRepository.save(article);
+
+            return article.getId();
+        } catch (Exception ex) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_SHOW_ERROR), ex);
+        }
+    }
+
+    @Override
+    public Long hide(Long id) throws ServerException {
+        try {
+            Article article = getArticle(id);
+
+            article.setStatus(ArticleStatus.HIDDEN);
+            articleRepository.save(article);
+
+            return article.getId();
+        } catch (Exception ex) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_HIDE_ERROR), ex);
+        }
+    }
+
+    @Override
+    public Long block(Long id) throws ServerException {
+        try {
+            Article article = getArticle(id);
+
+            article.setStatus(ArticleStatus.BLOCKED);
+            articleRepository.save(article);
+
+            return article.getId();
+        } catch (Exception ex) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_BLOCK_ERROR), ex);
         }
     }
 

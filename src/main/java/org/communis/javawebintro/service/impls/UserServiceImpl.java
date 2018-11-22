@@ -1,7 +1,6 @@
 package org.communis.javawebintro.service.impls;
 
 import org.communis.javawebintro.config.UserDetailsImpl;
-import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
@@ -52,17 +51,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageWrapper<UserWrapper> getPage(UserFilterWrapper filter) throws ServerException {
+    public Page<UserWrapper> getPage(UserFilterWrapper filter) throws ServerException {
         try {
-            int pageNumber, pageSize;
-            pageNumber = filter.getPage() - 1;
-            pageNumber = pageNumber < 0 ? 0 : pageNumber;
-            pageSize = filter.getSize();
+            int pageNumber = (filter.getPage() < 1) ? 0 : filter.getPage();
+            int pageSize = filter.getSize();
 
             Sort sortBy = new Sort(new Sort.Order(Sort.Direction.ASC, "login"));
             Pageable pageable = new PageRequest(pageNumber, pageSize, sortBy);
 
-            return new PageWrapper<>(userRepository.findAll(UserSpecification.build(filter), pageable), UserWrapper::new);
+            return userRepository.findAll(UserSpecification.build(filter), pageable).map(UserWrapper::new);
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LIST_ERROR), ex);
         }
@@ -104,8 +101,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return user.getId();
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR), ex);
         }
@@ -178,8 +173,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return user.getId();
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UNBLOCK_ERROR), ex);
         }
@@ -206,8 +199,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return user.getId();
-        } catch (ServerException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_PASSWORD_ERROR), ex);
         }

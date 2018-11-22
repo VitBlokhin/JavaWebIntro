@@ -1,9 +1,11 @@
 package org.communis.javawebintro.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.communis.javawebintro.entity.Article;
 import org.communis.javawebintro.enums.ArticleStatus;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,10 +15,13 @@ public class ArticleWrapper implements ObjectWrapper<Article>, Serializable {
 
     private String title;
 
+    @NotNull
     private String content;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateCreate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateClose;
 
     private ArticleStatus status;
@@ -55,9 +60,5 @@ public class ArticleWrapper implements ObjectWrapper<Article>, Serializable {
             item.setContent(content);
             //item.setStatus(status);
         }
-    }
-
-    public boolean isShown(){
-        return status == ArticleStatus.SHOWN;
     }
 }

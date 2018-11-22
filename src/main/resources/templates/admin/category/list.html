@@ -4,7 +4,7 @@
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
     <title>Реестр категорий</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>-->
 
     <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
     <script th:src="@{/static/js/filter.js}"></script>
@@ -31,21 +31,21 @@
                     </thead>
                     <tbody>
                     <tr th:class="'clickable'"
-                        th:each="category : ${page.items}"
+                        th:each="category : ${page}"
                         th:onclick="'request(\'' + @{|/admin/categories/${category.id}|}+ '\');'">
-                        <td th:text="|${category.getName()}|"></td>
-                        <td th:text="|${category.getDateOpen()}|"></td>
-                        <td th:text="|${category.getDateClose()}|"></td>
+                        <td th:text="|${category.name}|"></td>
+                        <td th:text="|${#dates.format(category.dateOpen,'dd-MM-yyyy HH:mm')}|"></td>
+                        <td th:text="|${#dates.format(category.dateClose,'dd-MM-yyyy HH:mm')}|"></td>
                     </tr>
                     </tbody>
                 </table>
 
-                <div th:if="${page.total > 1}" class="card-content page-info">
+                <div th:if="${page.totalPages > 1}" class="card-content page-info">
                     <div th:replace="fragments/pagination :: pagination('/admin/categories')"></div>
                 </div>
 
-                <div th:replace="fragments/filter :: addButton('/admin/categories/add')"></div>
             </div>
+            <div th:replace="fragments/filter :: addButton('/admin/categories/add')"></div>
         </div>
     </div>
 </main>

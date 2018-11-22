@@ -1,14 +1,24 @@
 package org.communis.javawebintro.dto.filters;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 public class ObjectFilter {
 
-    static final String DATE_FORMAT = "dd.MM.yyyy";
+    static final String DATE_FORMAT = "dd-MM-yyyy";
 
-    private String search;
-    protected int page = 1;
+    protected String search;
+    protected int page = 0;
     protected int size = 3;
+    protected Date dateClose;
+
+    public Date getDateClose() {
+        return dateClose;
+    }
+
+    public void setDateClose(Date dateClose) {
+        this.dateClose = dateClose;
+    }
 
     public String getSearch() {
         return search;

@@ -38,10 +38,10 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ModelAndView list(@PathVariable("id") Long id, ArticleFilterWrapper articleFilter) throws ServerException {
+    public ModelAndView getCategory(@PathVariable("id") Long id, ArticleFilterWrapper articleFilter) throws ServerException {
         ModelAndView categoriesPage = new ModelAndView(CATEGORY_VIEWS_PATH + "view");
         articleFilter.setCategoryId(id);
-        articleFilter.setStatus(ArticleStatus.SHOWN);
+        //articleFilter.setStatus(ArticleStatus.SHOWN);
         categoriesPage.addObject("filter", articleFilter);
         categoriesPage.addObject("category", categoryService.getById(id));
         categoriesPage.addObject("page", articleService.getPage(articleFilter));

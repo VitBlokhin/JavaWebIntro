@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
-    <title>Категории</title>
+    <title th:text="|Категории|"></title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>-->
 
     <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
     <script th:src="@{/static/js/filter.js}"></script>
@@ -19,7 +19,7 @@
         <div th:replace="fragments/filter :: filter('/categories')"></div>
     </div>
     <div class="card">
-        <table class="bordered responsive-table">
+        <table class="bordered">
             <thead>
             <tr>
                 <th>Название категории</th>
@@ -27,14 +27,14 @@
             </thead>
             <tbody>
             <tr th:class="'clickable'"
-                th:each="category : ${page.items}"
+                th:each="category : ${page}"
                 th:onclick="'request(\'' + @{|/categories/${category.id}|}+ '\');'">
                 <td th:text="|${category.getName()}|"></td>
             </tr>
             </tbody>
         </table>
 
-        <div th:if="${page.total > 1}" class="card-content page-info">
+        <div th:if="${page.totalPages > 1}" class="card-content page-info">
             <div th:replace="fragments/pagination :: pagination('/categories')"></div>
         </div>
     </div>

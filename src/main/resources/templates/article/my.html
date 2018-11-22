@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
+    <title th:text="|Мои заметки|"></title>
+
+    <script th:src="@{/static/js/validate_fields.js}"></script>
+    <script th:src="@{/static/js/articles/controller.js}"></script>
+</head>
+<body>
+
+<header th:replace="fragments/header :: header(myarticles, user)"></header>
+
+<main th:replace="fragments/card/article :: articleList('/articles/my')"></main>
+
+</body>
+</html>

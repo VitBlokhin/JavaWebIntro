@@ -4,7 +4,8 @@ public enum ArticleStatus {
     NEW,
     SHOWN,
     HIDDEN,
-    BLOCKED;
+    BLOCKED,
+    DELETED;
 
     public String getStringName() {
         switch (this) {
@@ -16,6 +17,8 @@ public enum ArticleStatus {
                 return "Скрыто";
             case BLOCKED:
                 return "Заблокировано";
+            case DELETED:
+                return "Удалено";
             default:
                 return null;
         }

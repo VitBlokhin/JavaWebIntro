@@ -1,28 +1,34 @@
-<html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns="http://www.w3.org/1999/xhtml">
-<div th:fragment="pagination(url)" class="row">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<div th:fragment="pagination(url)" class="center-align">
 
-    <div class="col s12 pagination-area">
-        <ul class="pagination">
-            <li th:class="${page.number <=  1} ? 'disabled' : 'waves-effect'">
-                <a href="#!" th:if="${page.number <= 1}"><i class="material-icons">chevron_left</i></a>
-                <a th:if="${page.number > 1}" th:href="@{${url} + '?page=' + ${page.number - 1}}">
-                    <i class="material-icons">chevron_left</i>
-                </a>
-            </li>
-            <li class="active">
-                <a href="#!">
-                    <span th:text="${filter.page}"></span>
-                </a>
-            </li>
-            <li th:class="${page.number >= page.total} ? 'disabled' : 'waves-effect'">
-                <a href="#!" th:if="${page.number >= page.total}"><i class="material-icons">chevron_right</i></a>
-                <a th:if="${page.number < page.total}" th:href="@{${url} + '?page=' + ${page.number + 1}}">
-                    <i class="material-icons">chevron_right</i>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <form id="filter" th:action="${url}" method="get" th:object="${filter}">
+        <input th:if="*{search != null}" type="hidden" name="search" th:field="*{search}">
+
+        <th:block th:if="${url == '/admin/users'}">
+            <th:block th:replace="fragments/pagination :: userFilterPagination"/>
+        </th:block>
+
+        <button type="submit"
+                th:class="${'btn' + (page.number < 1 ? ' disabled' : ' waves-effect')}"
+                name="page" th:value="${page.number - 1}">
+            <i class="material-icons">chevron_left</i>
+        </button>
+        <button type="button" class="waves-effect waves-blue btn-flat">
+            <span th:text="|${page.number + 1} / ${page.totalPages}|"></span>
+        </button>
+        <button type="submit"
+                th:class="${'btn' + (page.number + 1 >= page.totalPages ? ' disabled' : ' waves-effect')}"
+                name="page" th:value="${page.number + 1}">
+            <i class="material-icons">chevron_right</i>
+        </button>
+    </form>
 </div>
+
+
+<th:block th:fragment="userFilterPagination">
+    <input th:if="*{role != null}" type="hidden" name="role" th:field="*{role}">
+    <input th:if="*{status != null}" type="hidden" name="status" th:field="*{status}">
+</th:block>
+
 </html>

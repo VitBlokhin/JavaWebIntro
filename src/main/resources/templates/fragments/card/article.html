@@ -1,0 +1,137 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<main th:fragment="articleFields(action)" class="container">
+    <div class="card-panel">
+        <div class="row">
+            <div class="col s12">
+                <nav class="breadcrumb-nav" th:if="${action == '/admin/articles'}">
+                    <div class="nav-wrapper">
+                        <div class="col s12">
+                            <a th:href="@{/admin/articles}" class="breadcrumb">Реестр заметок</a>
+                            <a th:href="@{'/admin/articles/' + ${article.id}}" th:text="'№' + ${article.id}"
+                               class="breadcrumb"></a>
+                        </div>
+                    </div>
+                </nav>
+                <nav class="breadcrumb-nav" th:if="${action == '/my/articles'}">
+                    <div class="nav-wrapper">
+                        <div class="col s12">
+                            <a th:href="@{/}" class="breadcrumb">Главная</a>
+                            <a th:href="@{/my}" class="breadcrumb">Персональные данные</a>
+                            <a th:href="@{/my/articles}" class="breadcrumb">Мои заметки</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <form id="user-form" class="form-horizontal col s12" method="PATCH"
+                  th:action="${action}">
+
+                <input type="hidden" name="id" th:field="${article.id}"/>
+
+                <fieldset>
+                    <legend>Заметка</legend>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                <input id="title" type="text"
+                                       class="required validate" maxlength="100"
+                                       th:field="${article.title}"/>
+                                <label for="title">Заголовок</label>
+                            </div>
+                            <div class="input-field">
+                                <select id="category" th:field="${article.categoryId}">
+                                    <option th:value="${null}">Не назначена</option>
+                                    <option th:each="cat : ${categories}"
+                                            th:value="${cat.id}"
+                                            th:text="${cat.name}"
+                                            th:selected="${cat.id == article.categoryId}"></option>
+                                </select>
+                                <label for="category">Категория</label>
+                            </div>
+                            <div class="input-field">
+                                <textarea id="content" class="materialize-textarea"
+                                          th:field="${article.content}"></textarea>
+                                <label for="content">Текст заметки</label>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="input-field" th:hidden="${action == 'my/'}"
+                                 sec:authorize="hasRole('ROLE_ADMIN')">
+                                <input name="status" th:field="${article.status}" hidden/>
+                                <input id="status" th:value="${article.status.getStringName()}" readonly type="text"/>
+                                <label for="status">Статус</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="buttons-area col s12">
+                            <button onclick="ArticleController.show()"
+                                    th:if="${action == '/admin/articles' && article.status == T(org.communis.javawebintro.enums.ArticleStatus).NEW}"
+                                    type="button" class="waves-effect waves-light btn">Принять
+                            </button>
+                            <button onclick="ArticleController.hide()"
+                                    th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).SHOWN}"
+                                    type="button" class="waves-effect waves-light btn">Скрыть
+                            </button>
+                            <button onclick="ArticleController.block()"
+                                    th:if="${action == '/admin/articles' && article.status != T(org.communis.javawebintro.enums.ArticleStatus).BLOCKED}"
+                                    type="button" class="waves-effect waves-light btn">Заблокировать
+                            </button>
+                            <button onclick="ArticleController.edit()"
+                                    type="button" class="waves-effect waves-light btn">Cохранить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12" id="data-success">
+                            <div th:replace="fragments/info :: successFragment"></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div th:replace="fragments/error :: errorModalFragment"></div>
+</main>
+
+<main th:fragment="articleList(action)" class="container">
+    <div class="card-panel">
+        <nav class="breadcrumb-nav">
+            <nav class="breadcrumb-nav" th:if="${action == '/articles'}">
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
+                    </div>
+                </div>
+            </nav>
+            <nav class="breadcrumb-nav" th:if="${action == '/articles/my'}">
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
+                        <a th:href="@{/articles/my}" class="breadcrumb">Мои заметки</a>
+                    </div>
+                </div>
+            </nav>
+        </nav>
+        <div th:replace="fragments/filter :: filter(${action})"></div>
+    </div>
+    <div class="card" th:each="article : ${page}">
+        <div class="card-content">
+            <span class="card-title" th:text="|${article.title}|"></span>
+            <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
+            <a th:href="@{'/categories/'+ ${article.categoryId}}" th:text="${article.categoryId}"></a>
+        </div>
+        <div class="card-action">
+            <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
+        </div>
+    </div>
+    <div th:if="${page.totalPages > 1}" class="card-content page-info">
+        <div th:replace="fragments/pagination :: pagination(${action})"></div>
+    </div>
+
+    <div th:replace="fragments/filter :: addButton('/articles/add')"></div>
+</main>
+</html>

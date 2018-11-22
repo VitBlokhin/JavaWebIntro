@@ -15,16 +15,14 @@ import java.util.Date;
 
 @Data
 public class UserWrapper implements ObjectWrapper<User>, Serializable {
-    private final String EMAIL_REGEXP = "(.+@.+)";
-
-    private Long id;
+    protected Long id;
 
     @NotNull
     @Size(max = 100)
-    private String firstName;
+    protected String firstName;
 
     @Size(max = 100)
-    private String lastName;
+    protected String lastName;
 
     @NotNull
     @Size(max = 50)

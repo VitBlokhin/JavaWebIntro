@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 function getData(form) {
     var formData = {};
-    $('input, texarea, select', form).each(function () {
+    $('input, textarea, select', form).each(function () {
             if (this.name && this.name != '') {
                 formData[this.name] = this.value;
                 //console.log('formData[' + this.name + '] = ' + formData[this.name]);

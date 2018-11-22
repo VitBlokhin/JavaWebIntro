@@ -5,9 +5,9 @@
       th:with="title='Java Web Intro'">
 
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
-    <title>${category.name}</title>
+    <title th:text="${category.name}"></title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>-->
 
 </head>
 <body>
@@ -25,26 +25,21 @@
         </nav>
         <div th:replace="fragments/filter :: filter('/categories/' + ${category.id})"></div>
     </div>
-    <div class="card"
-         th:each="article : ${page.items}"
-         th:onclick="'request(\'' + @{|/articles/${article.id}|}+ '\');'">
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title" th:text="|${article.getTitle()}|"></span>
-                <p th:text="|${category.getDateOpen()}|"></p>
-                <a th:href="@{/categories/${article.getCategoryId()}}">${article.getCategoryId()}</a>
-            </div>
-            <div class="card-action">
-                <a th:href="@{/articles/${article.id}}">Подробнее</a>
-            </div>
+    <div class="card" th:each="article : ${page}">
+        <div class="card-content">
+            <span class="card-title" th:text="|${article.title}|"></span>
+            <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
+            <a th:href="@{'/categories/'+ ${category.id}}" th:text="${category.name}"></a>
+        </div>
+        <div class="card-action">
+            <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
         </div>
     </div>
-    <div th:if="${page.total > 1}" class="card-content page-info">
+    <div th:if="${page.totalPages > 1}" class="card-content page-info">
         <div th:replace="fragments/pagination :: pagination('/')"></div>
     </div>
 
-    <div sec:authorize="hasRole('ROLE_AUTHOR')"
-         th:replace="fragments/filter :: addButton('/articles/add')"></div>
+    <div th:replace="fragments/filter :: addButton('/articles/add')"></div>
 </main>
 </body>
 </html>

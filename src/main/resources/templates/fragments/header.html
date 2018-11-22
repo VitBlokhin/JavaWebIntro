@@ -45,8 +45,13 @@
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="divider"></div>
             </li>
-            <li sec:authorize="hasRole('ROLE_AUTHOR')">
-                <a th:href="@{/articles/add}">Новое объявление</a>
+            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+                th:class="${item == 'addarticle'} ? active : ''">
+                <a th:href="@{/articles/add}">Новая заметка</a>
+            </li>
+            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+                th:class="${item == 'myarticles'} ? active : ''">
+                <a th:href="@{/articles/my}">Мои заметки</a>
             </li>
             <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
                 th:class="${item == 'categories'} ? active : ''">

@@ -4,6 +4,7 @@ import org.communis.javawebintro.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
@@ -15,4 +16,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
     Optional<Article> findFirstByContent(String content);
 
     Optional<Article> findFirstByTitleAndContent(String title, String content);
+
+    List<Article> findAllByAuthorId(Long id);
 }

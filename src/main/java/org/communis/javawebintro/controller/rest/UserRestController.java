@@ -1,6 +1,5 @@
 package org.communis.javawebintro.controller.rest;
 
-import org.communis.javawebintro.dto.PageWrapper;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
@@ -11,6 +10,7 @@ import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +30,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public PageWrapper<UserWrapper> list(UserFilterWrapper userFilterWrapper)
+    public Page<UserWrapper> list(UserFilterWrapper userFilterWrapper)
             throws InvalidDataException, ServerException {
         return userService.getPage(userFilterWrapper);
     }
