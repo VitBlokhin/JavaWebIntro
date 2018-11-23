@@ -1,37 +1,32 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns="http://www.w3.org/1999/xhtml">
-<main th:fragment="userFields(action)" class="container">
-    <div class="card-panel">
-        <div class="row">
-            <div class="col s12">
-                <nav class="breadcrumb-nav" th:if="${action == '/admin/users'}">
-                    <div class="nav-wrapper">
-                        <div class="col s12">
-                            <a th:href="@{/admin/users}" class="breadcrumb">Реестр пользователей</a>
-                            <a th:href="@{'/admin/users/' + ${user.id}}" th:text="'№' + ${user.id}"
-                               class="breadcrumb"></a>
-                        </div>
-                    </div>
-                </nav>
-                <nav class="breadcrumb-nav" th:if="${action == '/my'}">
-                    <div class="nav-wrapper">
-                        <div class="col s12">
-                            <a th:href="@{/}" class="breadcrumb">Главная</a>
-                            <a th:href="@{/my}" class="breadcrumb">Персональные данные</a>
-                        </div>
-                    </div>
-                </nav>
+<main th:fragment="userFields(action)">
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
+                <div class="col s12" th:if="${action == '/admin/users'}">
+                    <a th:href="@{/admin/users}" class="breadcrumb">Реестр пользователей</a>
+                    <a th:href="@{'/admin/users/' + ${user.id}}" th:text="'№' + ${user.id}"
+                       class="breadcrumb"></a>
+                </div>
+                <div class="col s12" th:if="${action == '/my'}">
+                    <a th:href="@{/}" class="breadcrumb">Главная</a>
+                    <a th:href="@{/my}" class="breadcrumb">Персональные данные</a>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <form id="user-form" class="form-horizontal col s12 m7" method="PATCH"
-                  th:action="${action}">
+    </nav>
 
-                <input type="hidden" name="id" th:field="${user.id}"/>
+    <div class="row">
+        <div class="col s12 m7">
+            <div class="card-panel">
+                <h5>Личная информация</h5>
+                <form id="user-form" class="form-horizontal" method="PATCH"
+                      th:action="${action}">
 
-                <fieldset>
-                    <legend>Личная информация</legend>
+                    <input type="hidden" name="id" th:field="${user.id}"/>
+
                     <div class="row">
                         <div class="col s6">
                             <div class="input-field">
@@ -73,23 +68,27 @@
                             <div class="input-field" th:hidden="${action == 'my/'}"
                                  sec:authorize="hasRole('ROLE_ADMIN')">
                                 <input name="status" th:field="${user.status}" hidden/>
-                                <input id="status" th:value="${user.status.getStringName()}" readonly type="text"/>
+                                <input id="status" th:value="${user.status.getStringName()}" readonly
+                                       type="text"/>
                                 <label for="status">Статус</label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="buttons-area col s12">
+                        <div class="col s12 m6 center-align">
                             <button onclick="UserController.block()"
                                     th:if="${action == '/admin/users' && user.status != T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
-                                    type="button" class="waves-effect waves-light btn">Заблокировать
+                                    type="button" class="waves-effect waves-light btn indigo darken-4">Заблокировать
                             </button>
+
                             <button onclick="UserController.unblock()"
                                     th:if="${action == '/admin/users' && user.status == T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
-                                    type="button" class="waves-effect waves-light btn">Разблокировать
+                                    type="button" class="waves-effect waves-light btn indigo darken-4">Разблокировать
                             </button>
+                        </div>
+                        <div class="col s12 m6 center-align">
                             <button onclick="UserController.edit()"
-                                    type="button" class="waves-effect waves-light btn">Cохранить
+                                    type="button" class="waves-effect waves-light btn indigo darken-4">Cохранить
                             </button>
                         </div>
                     </div>
@@ -99,36 +98,44 @@
                         </div>
                     </div>
                     <div th:replace="fragments/error :: errorModalFragment"></div>
-                </fieldset>
-            </form>
+                </form>
+            </div>
 
-            <form id="password-form" class="form-horizontal col s12 m5" method="PATCH"
-                  th:action="${action} + '/password'">
-                <input type="hidden" name="id" th:field="${user.id}"/>
-                <fieldset>
-                    <legend>Смена пароля</legend>
-                    <div class="input-field">
-                        <input type="password" id="password" name="password"
-                               class="required validate" maxlength="32"/>
-                        <label for="password">Новый пароль</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="password" id="confirmPassword" name="confirmPassword"
-                               class="required validate" maxlength="32"/>
-                        <label for="confirmPassword">Повторите пароль</label>
-                    </div>
-                    <div class="buttons-area">
-                        <button onclick="UserController.password()"
-                                type="button" class="waves-effect waves-light btn">Сменить пароль
-                        </button>
+
+        </div>
+        <div class="col s12 m5">
+            <div class="card-panel">
+                <h5>Смена пароля</h5>
+                <form id="password-form" class="form-horizontal" method="PATCH"
+                      th:action="${action} + '/password'">
+                    <input type="hidden" name="id" th:field="${user.id}"/>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                <input type="password" id="password" name="password"
+                                       class="required validate" maxlength="32"/>
+                                <label for="password">Новый пароль</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="password" id="confirmPassword" name="confirmPassword"
+                                       class="required validate" maxlength="32"/>
+                                <label for="confirmPassword">Повторите пароль</label>
+                            </div>
+                            <div class="center-align">
+                                <button onclick="UserController.password()"
+                                        type="button" class="waves-effect waves-light btn indigo darken-4">Сменить пароль
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div id="password-success">
                         <div th:replace="fragments/info :: successFragment"></div>
                         <div th:replace="fragments/error :: errorFragment"></div>
                     </div>
-                </fieldset>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
+
 </main>
 </html>

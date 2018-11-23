@@ -19,15 +19,14 @@
         <div th:replace="fragments/filter :: filter('/categories')"></div>
     </div>
     <div class="card">
-        <table class="bordered">
+        <table class="bordered highlight">
             <thead>
             <tr>
                 <th>Название категории</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:class="'clickable'"
-                th:each="category : ${page}"
+            <tr th:each="category : ${page}"
                 th:onclick="'request(\'' + @{|/categories/${category.id}|}+ '\');'">
                 <td th:text="|${category.getName()}|"></td>
             </tr>

@@ -21,7 +21,7 @@
                 <div th:replace="fragments/filter :: filter('/admin/categories')"></div>
             </div>
             <div class="card">
-                <table class="bordered responsive-table">
+                <table class="bordered highlight">
                     <thead>
                     <tr>
                         <th>Название категории</th>
@@ -30,8 +30,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:class="'clickable'"
-                        th:each="category : ${page}"
+                    <tr th:each="category : ${page}"
                         th:onclick="'request(\'' + @{|/admin/categories/${category.id}|}+ '\');'">
                         <td th:text="|${category.name}|"></td>
                         <td th:text="|${#dates.format(category.dateOpen,'dd-MM-yyyy HH:mm')}|"></td>

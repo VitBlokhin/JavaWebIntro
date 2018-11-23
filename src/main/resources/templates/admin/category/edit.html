@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
-    <title>Изменение категории</title>
+    <title th:text="|Изменение категории|"></title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>-->
 
     <script th:src="@{/static/js/validate_fields.js}"></script>
     <script th:src="@{/static/js/admin/categories/service.js}"></script>
@@ -12,44 +12,49 @@
 </head>
 <body>
 <header th:replace="fragments/header :: header(category, admin)"></header>
-<main class="container">
-    <div class="card-panel">
-        <nav class="breadcrumb-nav">
-            <div class="nav-wrapper">
+<main>
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
                 <div class="col s12">
                     <a th:href="@{/admin/categories}" class="breadcrumb">Реестр категорий</a>
                     <a th:href="@{'/admin/categories/' + ${category.id}}" th:text="'№' + ${category.id}"
                        class="breadcrumb"></a>
                 </div>
             </div>
-        </nav>
-        <form id="category-form" class="form-horizontal row" method="PATCH" th:action="${'/admin/categories'}">
-            <input type="hidden" name="id" th:field="${category.id}"/>
-            <fieldset>
-                <legend>Данные категории</legend>
-                <div class="col s6">
-                    <div class="input-field">
-                        <input id="name" name="name" type="text"
-                               th:field="${category.name}" class="required validate" maxlength="100"/>
-                        <label for="name">Название</label>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h5>Данные категории</h5>
+                <form id="category-form" class="form-horizontal row" method="PATCH" th:action="${'/admin/categories'}">
+                    <input type="hidden" name="id" th:field="${category.id}"/>
+
+                    <div class="col s6">
+                        <div class="input-field">
+                            <input id="name" name="name" type="text"
+                                   th:field="${category.name}" class="required validate" maxlength="100"/>
+                            <label for="name">Название</label>
+                        </div>
                     </div>
-                </div>
-                <div class="buttons-area col s12">
-                    <button th:if="${category.dateClose == null}"
-                            type="button" class="waves-effect waves-light btn"
-                            onclick="CategoryController.delete()">
-                        Удалить
-                    </button>
-                    <button type="button" class="waves-effect waves-light btn"
-                            onclick="CategoryController.edit()">
-                        Сохранить
-                    </button>
-                </div>
-                <div class="col s12">
-                    <div th:replace="fragments/error :: errorFragment"></div>
-                </div>
-            </fieldset>
-        </form>
+                    <div class="center-align col s12">
+                        <button th:if="${category.dateClose == null}"
+                                type="button" class="waves-effect waves-light btn indigo darken-4"
+                                onclick="CategoryController.delete()">
+                            Удалить
+                        </button>
+                        <button type="button" class="waves-effect waves-light btn indigo darken-4"
+                                onclick="CategoryController.edit()">
+                            Сохранить
+                        </button>
+                    </div>
+                    <div class="col s12">
+                        <div th:replace="fragments/error :: errorFragment"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div th:replace="fragments/error :: errorModalFragment"></div>

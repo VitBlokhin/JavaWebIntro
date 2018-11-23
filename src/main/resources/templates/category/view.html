@@ -12,32 +12,38 @@
 </head>
 <body>
 <header th:replace="fragments/header :: header(categories, user)"></header>
-<main class="container">
-    <div class="card-panel">
-        <nav class="breadcrumb-nav">
-            <div class="nav-wrapper">
+<main>
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
                 <div class="col s12">
                     <a th:href="@{/categories}" class="breadcrumb">Категории</a>
                     <a th:href="@{'/categories/' + ${category.id}}" th:text="${category.name}"
                        class="breadcrumb"></a>
                 </div>
             </div>
-        </nav>
-        <div th:replace="fragments/filter :: filter('/categories/' + ${category.id})"></div>
-    </div>
-    <div class="card" th:each="article : ${page}">
-        <div class="card-content">
-            <span class="card-title" th:text="|${article.title}|"></span>
-            <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-            <a th:href="@{'/categories/'+ ${category.id}}" th:text="${category.name}"></a>
         </div>
-        <div class="card-action">
-            <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
+    </nav>
+    <diw class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div th:replace="fragments/filter :: filter('/categories/' + ${category.id})"></div>
+            </div>
+            <div class="card" th:each="article : ${page}">
+                <div class="card-content">
+                    <span class="card-title" th:text="|${article.title}|"></span>
+                    <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
+                    <a th:href="@{'/categories/'+ ${category.id}}" th:text="${category.name}"></a>
+                </div>
+                <div class="card-action">
+                    <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
+                </div>
+            </div>
+            <div th:if="${page.totalPages > 1}" class="card-content page-info">
+                <div th:replace="fragments/pagination :: pagination('/')"></div>
+            </div>
         </div>
-    </div>
-    <div th:if="${page.totalPages > 1}" class="card-content page-info">
-        <div th:replace="fragments/pagination :: pagination('/')"></div>
-    </div>
+    </diw>
 
     <div th:replace="fragments/filter :: addButton('/articles/add')"></div>
 </main>

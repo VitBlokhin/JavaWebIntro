@@ -4,80 +4,89 @@
 
 <header th:fragment="header(item, user)">
     <div class="navbar-fixed">
-    <nav class="nav-extended">
-        <div class="nav-wrapper">
-            <a class="brand-logo center" th:href="@{/}">Java Web Intro</a>
-            <ul id="nav-mobile" class="left">
-                <li><a href="#" data-activates="slide-out" id="collapse-btn"><i class="material-icons">menu</i></a>
-                </li>
-            </ul>
-        </div>
-        <ul id="slide-out" class="side-nav">
-            <li>
-                <div class="userView"
-                     th:with="isAnonymous=${#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')}">
-                    <a th:class="${isAnonymous ? 'not-clickable' : 'underline-link'}"
-                       th:href="@{${isAnonymous ? '#' : '/my'}}">
+        <nav class="nav-extended">
+            <div class="nav-wrapper indigo darken-4">
+                <a class="brand-logo center" th:href="@{/}">Java Web Intro</a>
+                <ul id="nav-mobile" class="left">
+                    <li><a href="#" data-activates="slide-out" id="collapse-btn"><i class="material-icons">menu</i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <!--<div class="nav-content row">-->
+            <!--<ul class="tabs tabs-transparent">-->
+            <!--<li class="tab">-->
+            <!--<a th:class="${item == 'test1'} ? 'active' : ''" target="_self"-->
+            <!--th:href="@{/test1}">-->
+            <!--Test 1</a>-->
+            <!--</li>-->
+            <!--<li class="tab">-->
+            <!--<a th:class="${item == 'test2'} ? 'active' : ''" target="_self"-->
+            <!--th:href="@{/test2}">-->
+            <!--Test 2</a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</div>-->
+        </nav>
+
+    </div>
+
+    <ul id="slide-out" class="side-nav collapsible">
+        <li>
+            <div class="user-view indigo darken-4"
+                 th:with="isAnonymous=${#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')}">
+                <a th:class="${isAnonymous ? 'not-clickable' : 'underline-link'}"
+                   th:href="@{${isAnonymous ? '#' : '/my'}}">
                             <span class="white-text name"
-                                  th:text="${#authorization.expression('!hasRole(''ROLE_ANONYMOUS'')') ?
+                                  th:text="${!isAnonymous ?
                     #authentication.getPrincipal().getUser().getFullName() : 'Анонимный пользователь'}">
                             </span>
-                    </a>
-                    <span sec:authorize="!hasRole('ROLE_ANONYMOUS')"
-                          class="white-text email not-clickable"
-                          th:text="${#authentication.getPrincipal().getUser().getEmail()}">
+                </a>
+                <span sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+                      class="white-text email not-clickable"
+                      th:text="${#authentication.getPrincipal().getUser().getEmail()}">
                         </span>
-                    <a class="underline-link" th:href="@{/login}"
-                       sec:authorize="hasRole('ROLE_ANONYMOUS')">Войти</a>
-                </div>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')">
-                <div class="divider"></div>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"
-                th:class="${item == 'user'} ? active : ''">
-                <a th:href="@{/admin/users}">Пользователи</a>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"
-                th:class="${item == 'category'} ? active : ''">
-                <a th:href="@{/admin/categories}">Управление категориями</a>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')">
-                <div class="divider"></div>
-            </li>
-            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
-                th:class="${item == 'addarticle'} ? active : ''">
-                <a th:href="@{/articles/add}">Новая заметка</a>
-            </li>
-            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
-                th:class="${item == 'myarticles'} ? active : ''">
-                <a th:href="@{/articles/my}">Мои заметки</a>
-            </li>
-            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
-                th:class="${item == 'categories'} ? active : ''">
-                <a th:href="@{/categories}">Категории</a>
-            </li>
-            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')">
-                <div class="divider"></div>
-            </li>
-            <li sec:authorize="!hasRole('ROLE_ANONYMOUS')">
-                <a th:href="@{/logout}">Выход</a>
-            </li>
-        </ul>
-        <!--<div class="nav-content row">-->
-            <!--<ul class="tabs tabs-transparent">-->
-                <!--<li class="tab">-->
-                    <!--<a th:class="${item == 'test1'} ? 'active' : ''" target="_self"-->
-                       <!--th:href="@{/test1}">-->
-                        <!--Test 1</a>-->
-                <!--</li>-->
-                <!--<li class="tab">-->
-                    <!--<a th:class="${item == 'test2'} ? 'active' : ''" target="_self"-->
-                       <!--th:href="@{/test2}">-->
-                        <!--Test 2</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    </nav>
-    </div>
+            </div>
+        </li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="collapsible-header">
+                <i class="material-icons">build</i>
+                Упраление
+            </div>
+            <div class="collapsible-body">
+                <ul>
+                    <li th:class="${item == 'user'} ? 'indigo lighten-5' : ''">
+                        <a th:href="@{/admin/users}">Пользователи</a>
+                    </li>
+                    <li th:class="${item == 'category'} ? 'indigo lighten-5' : ''">
+                        <a th:href="@{/admin/categories}">Категории</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="divider"></div>
+        </li>
+        <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+            th:class="${item == 'addarticle'} ? 'indigo lighten-5' : ''">
+            <a th:href="@{/articles/add}">Новая заметка</a>
+        </li>
+        <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+            th:class="${item == 'myarticles'} ? 'indigo lighten-5' : ''">
+            <a th:href="@{/articles/my}">Мои заметки</a>
+        </li>
+        <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+            th:class="${item == 'categories'} ? 'indigo lighten-5' : ''">
+            <a th:href="@{/categories}">Категории</a>
+        </li>
+        <li sec:authorize="!hasRole('ROLE_ANONYMOUS')">
+            <div class="divider"></div>
+        </li>
+        <li sec:authorize="!hasRole('ROLE_ANONYMOUS')">
+            <a th:href="@{/logout}">Выход</a>
+        </li>
+        <li sec:authorize="hasRole('ROLE_ANONYMOUS')">
+            <a th:href="@{/login}">Войти</a>
+        </li>
+    </ul>
 </header>

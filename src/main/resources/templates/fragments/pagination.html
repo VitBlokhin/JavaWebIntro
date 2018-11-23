@@ -10,7 +10,7 @@
         </th:block>
 
         <button type="submit"
-                th:class="${'btn' + (page.number < 1 ? ' disabled' : ' waves-effect')}"
+                th:class="${'btn indigo darken-4' + (page.number < 1 ? ' disabled' : ' waves-effect')}"
                 name="page" th:value="${page.number - 1}">
             <i class="material-icons">chevron_left</i>
         </button>
@@ -18,7 +18,7 @@
             <span th:text="|${page.number + 1} / ${page.totalPages}|"></span>
         </button>
         <button type="submit"
-                th:class="${'btn' + (page.number + 1 >= page.totalPages ? ' disabled' : ' waves-effect')}"
+                th:class="${'btn indigo darken-4' + (page.number + 1 >= page.totalPages ? ' disabled' : ' waves-effect')}"
                 name="page" th:value="${page.number + 1}">
             <i class="material-icons">chevron_right</i>
         </button>

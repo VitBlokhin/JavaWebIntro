@@ -14,10 +14,10 @@
 </head>
 <body>
 <header th:replace="fragments/header :: header(articles, user)"></header>
-<main class="container">
-    <div class="card-panel">
-        <nav class="breadcrumb-nav">
-            <div class="nav-wrapper">
+<main>
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
                 <div class="col s12">
                     <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
                     <a th:href="@{'/categories/' + ${category.id}}" th:text="${category.name}"
@@ -26,33 +26,38 @@
                        class="breadcrumb"></a>
                 </div>
             </div>
-        </nav>
-    </div>
-    <div class="card">
-        <div class="card-content">
-            <input type="hidden" id="id" th:field="${article.id}"/>
-            <span class="card-title" th:text="|${article.getTitle()}|"></span>
-            <p th:text="|Автор: ${user.getFullName()}|"></p>
-            <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-            <a th:href="@{'/categories/' + ${article.categoryId}}" th:text="|${category.name}|"></a>
-            <p th:text="|${article.content}|"></p>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <input type="hidden" id="id" th:field="${article.id}"/>
+                    <span class="card-title" th:text="|${article.getTitle()}|"></span>
+                    <p th:text="|Автор: ${user.getFullName()}|"></p>
+                    <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
+                    <a th:href="@{'/categories/' + ${article.categoryId}}" th:text="|${category.name}|"></a>
+                    <p th:text="|${article.content}|"></p>
 
-        </div>
-        <div class="card-action" sec:authorize="hasRole('ROLE_ADMIN')">
-            <button onclick="ArticleController.show()"
-                    th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).NEW}"
-                    type="button" class="waves-effect waves-light btn blue darken-4">Принять
-            </button>
-            <button onclick="ArticleController.hide()"
-                    th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).SHOWN}"
-                    type="button" class="waves-effect waves-light btn">Скрыть
-            </button>
-            <button onclick="ArticleController.block()"
-                    th:if="${ article.status != T(org.communis.javawebintro.enums.ArticleStatus).BLOCKED}"
-                    type="button" class="waves-effect waves-light btn">Заблокировать
-            </button>
+                </div>
+                <div class="card-action" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <button onclick="ArticleController.show()"
+                            th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).NEW}"
+                            type="button" class="waves-effect waves-light btn blue darken-4">Принять
+                    </button>
+                    <button onclick="ArticleController.hide()"
+                            th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).SHOWN}"
+                            type="button" class="waves-effect waves-light btn indigo darken-4">Скрыть
+                    </button>
+                    <button onclick="ArticleController.block()"
+                            th:if="${ article.status != T(org.communis.javawebintro.enums.ArticleStatus).BLOCKED}"
+                            type="button" class="waves-effect waves-light btn indigo darken-4">Заблокировать
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+
 </main>
 </body>
 </html>

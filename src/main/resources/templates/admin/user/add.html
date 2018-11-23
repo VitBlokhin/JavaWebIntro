@@ -13,76 +13,83 @@
 
 <body>
 <header th:replace="fragments/header :: header(user, admin)"></header>
-<main class="container">
-    <div class="card-panel">
-        <nav class="breadcrumb-nav">
-            <div class="nav-wrapper">
+<main>
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
                 <div class="col s12">
                     <a th:href="@{/admin/users}" class="breadcrumb">Реестр пользователей</a>
                     <a th:href="@{/admin/users/add}" class="breadcrumb">Добавление пользователя</a>
                 </div>
             </div>
-        </nav>
-        <form id="user-add-form" class="form-horizontal row" method="POST" th:action="${'/admin/users'}">
-            <input type="hidden" name="id" th:field="${user.id}"/>
-            <fieldset>
-                <legend>Данные пользователя</legend>
-                <div class="col s12 m4">
-                    <div class="input-field">
-                        <input id="name" name="name" type="text"
-                               th:field="${user.firstName}" class="required validate" maxlength="100"/>
-                        <label for="name">Имя</label>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h5>Данные пользователя</h5>
+                <form id="user-add-form" class="form-horizontal row" method="POST" th:action="${'/admin/users'}">
+                    <input type="hidden" name="id" th:field="${user.id}"/>
+                    <div class="col s12 m4">
+                        <div class="input-field">
+                            <input id="name" name="name" type="text"
+                                   th:field="${user.firstName}" class="required validate" maxlength="100"/>
+                            <label for="name">Имя</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="second-name" name="lastName" type="text"
+                                   maxlength="100" th:field="${user.lastName}"/>
+                            <label for="second-name">Фамилия</label>
+                        </div>
                     </div>
-                    <div class="input-field">
-                        <input id="second-name" name="lastName" type="text"
-                               maxlength="100" th:field="${user.lastName}"/>
-                        <label for="second-name">Фамилия</label>
+                    <div class="col s12 m4">
+                        <div class="input-field">
+                            <input id="login" name="login"
+                                   maxlength="50"
+                                   type="text" class="required validate" th:field="${user.login}"/>
+                            <label for="login">Логин</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="email" name="email"
+                                   maxlength="150" class="required email validate" type="email"
+                                   th:field="${user.email}"/>
+                            <label for="email">Электронная почта</label>
+                        </div>
+                        <div class="input-field">
+                            <select id="role" th:field="${user.role}" name="role" required>
+                                <option th:value="${null}">Не назначена</option>
+                                <option th:each="r : ${roles}"
+                                        th:value="${r.toString()}"
+                                        th:text="${r.getStringName()}"></option>
+                            </select>
+                            <label for="role">Роль</label>
+                        </div>
                     </div>
-                </div>
-                <div class="col s12 m4">
-                    <div class="input-field">
-                        <input id="login" name="login"
-                               maxlength="50"
-                               type="text" class="required validate" th:field="${user.login}"/>
-                        <label for="login">Логин</label>
+                    <div class="col s12 m4">
+                        <div class="input-field">
+                            <input type="password" id="password" name="password" class="required validate"
+                                   maxlength="32"/>
+                            <label for="password">Пароль</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" id="confirmPassword"
+                                   name="confirmPassword" class="required validate" maxlength="32"/>
+                            <label for="confirmPassword">Повторите пароль</label>
+                        </div>
                     </div>
-                    <div class="input-field">
-                        <input id="email" name="email"
-                               maxlength="150" class="required email validate" type="email" th:field="${user.email}"/>
-                        <label for="email">Электронная почта</label>
+                    <div class="buttons-area col s12">
+                        <button type="button" class="waves-effect waves-light btn indigo darken-4" onclick="UserController.addUser()">
+                            Добавить
+                        </button>
                     </div>
-                    <div class="input-field">
-                        <select id="role" th:field="${user.role}" name="role" required>
-                            <option th:value="${null}">Не назначена</option>
-                            <option th:each="r : ${roles}"
-                                    th:value="${r.toString()}"
-                                    th:text="${r.getStringName()}"></option>
-                        </select>
-                        <label for="role">Роль:</label>
+                    <div class="col s12">
+                        <div th:replace="fragments/error :: errorFragment"></div>
                     </div>
-                </div>
-                <div class="col s12 m4">
-                    <div class="input-field">
-                        <input type="password" id="password" name="password" class="required validate" maxlength="32"/>
-                        <label for="password">Пароль</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="password" id="confirmPassword"
-                               name="confirmPassword" class="required validate" maxlength="32"/>
-                        <label for="confirmPassword">Повторите пароль</label>
-                    </div>
-                </div>
-                <div class="buttons-area col s12">
-                    <button type="button" class="waves-effect waves-light btn" onclick="UserController.addUser()">
-                        Добавить
-                    </button>
-                </div>
-                <div class="col s12">
-                    <div th:replace="fragments/error :: errorFragment"></div>
-                </div>
-            </fieldset>
-        </form>
+                </form>
+            </div>
+        </div>
     </div>
+
 
     <div th:replace="fragments/error :: errorModalFragment"></div>
 </main>

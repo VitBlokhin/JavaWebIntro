@@ -16,7 +16,7 @@ UserController.edit = function () {
 
 UserController.password = function () {
     //validateFields('#password-form');
-    sendRequest('#password-form', null, null, showSuccess);
+    sendRequest('#password-form', null, null, CallbackUtil.emptySuccessSave);
 };
 
 UserController.block = function () {

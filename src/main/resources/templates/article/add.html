@@ -4,7 +4,7 @@
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
     <title th:text="|Новая заметка|"></title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>-->
 
     <script th:src="@{/static/js/validate_fields.js}"></script>
     <script th:src="@{/static/js/articles/service.js}"></script>
@@ -13,54 +13,59 @@
 
 <body>
 <header th:replace="fragments/header :: header(addarticle, user)"></header>
-<main class="container">
-    <div class="card-panel">
-        <nav class="breadcrumb-nav">
-            <div class="nav-wrapper">
+<main>
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
                 <div class="col s12">
-                    <a th:href="@{/}" class="breadcrumb">Главная</a>
+                    <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
                     <a th:href="@{/articles/add}" class="breadcrumb">Новая заметка</a>
                 </div>
             </div>
-        </nav>
-        <form id="article-add-form" class="form-horizontal row" method="POST" th:action="${'/articles'}">
-            <input type="hidden" name="id" th:field="${article.id}"/>
-            <fieldset>
-                <legend>Заметка</legend>
-                <div class="col s12">
-                    <div class="input-field">
-                        <input id="title" name="title" type="text"
-                               th:field="${article.title}" class="validate" required maxlength="100"/>
-                        <label for="title">Заголовок</label>
-                    </div>
-                    <div class="input-field">
-                        <select id="category" th:field="${article.categoryId}">
-                            <option th:value="${null}">Не назначена</option>
-                            <option th:each="cat : ${categories}"
-                                    th:value="${cat.id}"
-                                    th:text="${cat.name}"></option>
-                        </select>
-                        <label for="category">Категория</label>
-                    </div>
-                    <div class="input-field">
-                        <textarea id="content" name="content"
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h5>Заметка</h5>
+                <form id="article-add-form" class="form-horizontal row" method="POST" th:action="${'/articles'}">
+                    <input type="hidden" name="id" th:field="${article.id}"/>
+
+                    <div class="col s12">
+                        <div class="input-field">
+                            <input id="title" name="title" type="text"
+                                   th:field="${article.title}" class="validate" required maxlength="100"/>
+                            <label for="title">Заголовок</label>
+                        </div>
+                        <div class="input-field">
+                            <select id="category" th:field="${article.categoryId}">
+                                <option th:value="${null}">Не назначена</option>
+                                <option th:each="cat : ${categories}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.name}"></option>
+                            </select>
+                            <label for="category">Категория</label>
+                        </div>
+                        <div class="input-field">
+                            <textarea id="content" name="content"
                                   class="materialize-textarea" required
                                   th:field="${article.content}"></textarea>
-                        <label for="content">Текст заметки</label>
+                            <label for="content">Текст заметки</label>
+                        </div>
                     </div>
-                </div>
-                <div class="buttons-area col s12">
-                    <button type="button" class="waves-effect waves-light btn" onclick="ArticleController.add()">
-                        Добавить
-                    </button>
-                </div>
-                <div class="col s12">
-                    <div th:replace="fragments/error :: errorFragment"></div>
-                </div>
-            </fieldset>
-        </form>
+                    <div class="center-align col s12">
+                        <button type="button" class="waves-effect waves-light btn indigo darken-4"
+                                onclick="ArticleController.add()">
+                            Добавить
+                        </button>
+                    </div>
+                    <div class="col s12">
+                        <div th:replace="fragments/error :: errorFragment"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
     <div th:replace="fragments/error :: errorModalFragment"></div>
 </main>
 

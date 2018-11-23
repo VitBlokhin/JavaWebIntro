@@ -6,10 +6,10 @@ UserController = {};
 
 UserController.edit = function(){
     //TODO
-    sendRequest('#user-form', null, null, showSuccess);
+    sendRequest('#user-form', null, null, CallbackUtil.emptySuccessSave);
 };
 
 UserController.password = function(){
     //TODO
-    sendRequest('#password-form', null, null, showSuccess);
+    sendRequest('#password-form', null, null, CallbackUtil.emptySuccessSave);
 };

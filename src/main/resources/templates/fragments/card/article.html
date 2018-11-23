@@ -1,38 +1,33 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns="http://www.w3.org/1999/xhtml">
-<main th:fragment="articleFields(action)" class="container">
-    <div class="card-panel">
-        <div class="row">
-            <div class="col s12">
-                <nav class="breadcrumb-nav" th:if="${action == '/admin/articles'}">
-                    <div class="nav-wrapper">
-                        <div class="col s12">
-                            <a th:href="@{/admin/articles}" class="breadcrumb">Реестр заметок</a>
-                            <a th:href="@{'/admin/articles/' + ${article.id}}" th:text="'№' + ${article.id}"
-                               class="breadcrumb"></a>
-                        </div>
-                    </div>
-                </nav>
-                <nav class="breadcrumb-nav" th:if="${action == '/my/articles'}">
-                    <div class="nav-wrapper">
-                        <div class="col s12">
-                            <a th:href="@{/}" class="breadcrumb">Главная</a>
-                            <a th:href="@{/my}" class="breadcrumb">Персональные данные</a>
-                            <a th:href="@{/my/articles}" class="breadcrumb">Мои заметки</a>
-                        </div>
-                    </div>
-                </nav>
+<main th:fragment="articleFields(action)">
+
+    <nav class="breadcrumb-nav">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
+                <div class="col s12" th:if="${action == '/admin/articles'}">
+                    <a th:href="@{/admin/articles}" class="breadcrumb">Реестр заметок</a>
+                    <a th:href="@{'/admin/articles/' + ${article.id}}" th:text="'№' + ${article.id}"
+                       class="breadcrumb"></a>
+                </div>
+                <div class="col s12" th:if="${action == '/articles/my'}">
+                    <a th:href="@{/}" class="breadcrumb">Главная</a>
+                    <a th:href="@{/my}" class="breadcrumb">Персональные данные</a>
+                    <a th:href="@{/my/articles}" class="breadcrumb">Мои заметки</a>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <form id="user-form" class="form-horizontal col s12" method="PATCH"
-                  th:action="${action}">
+    </nav>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h5>Заметка</h5>
+                <form id="article-form" class="form-horizontal" method="PATCH"
+                      th:action="${action}">
 
-                <input type="hidden" name="id" th:field="${article.id}"/>
+                    <input type="hidden" name="id" th:field="${article.id}"/>
 
-                <fieldset>
-                    <legend>Заметка</legend>
                     <div class="row">
                         <div class="col s12">
                             <div class="input-field">
@@ -90,48 +85,48 @@
                             <div th:replace="fragments/info :: successFragment"></div>
                         </div>
                     </div>
-                </fieldset>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
     <div th:replace="fragments/error :: errorModalFragment"></div>
 </main>
 
-<main th:fragment="articleList(action)" class="container">
-    <div class="card-panel">
-        <nav class="breadcrumb-nav">
-            <nav class="breadcrumb-nav" th:if="${action == '/articles'}">
-                <div class="nav-wrapper">
-                    <div class="col s12">
-                        <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
-                    </div>
+<main th:fragment="articleList(action)">
+    <nav class="nav-extended">
+        <div class="nav-wrapper indigo darken-4">
+            <div class="row">
+                <div class="col s12" th:if="${action == '/articles'}">
+                    <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
                 </div>
-            </nav>
-            <nav class="breadcrumb-nav" th:if="${action == '/articles/my'}">
-                <div class="nav-wrapper">
-                    <div class="col s12">
-                        <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
-                        <a th:href="@{/articles/my}" class="breadcrumb">Мои заметки</a>
-                    </div>
+                <div class="col s12" th:if="${action == '/articles/my'}">
+                    <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
+                    <a th:href="@{/articles/my}" class="breadcrumb">Мои заметки</a>
                 </div>
-            </nav>
-        </nav>
-        <div th:replace="fragments/filter :: filter(${action})"></div>
-    </div>
-    <div class="card" th:each="article : ${page}">
-        <div class="card-content">
-            <span class="card-title" th:text="|${article.title}|"></span>
-            <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-            <a th:href="@{'/categories/'+ ${article.categoryId}}" th:text="${article.categoryId}"></a>
+            </div>
         </div>
-        <div class="card-action">
-            <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
-        </div>
-    </div>
-    <div th:if="${page.totalPages > 1}" class="card-content page-info">
-        <div th:replace="fragments/pagination :: pagination(${action})"></div>
-    </div>
+    </nav>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div th:replace="fragments/filter :: filter(${action})"></div>
+            </div>
+            <div class="card" th:each="article : ${page}">
+                <div class="card-content">
+                    <span class="card-title" th:text="|${article.title}|"></span>
+                    <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
+                    <a th:href="@{'/categories/'+ ${article.categoryId}}" th:text="${article.categoryId}"></a>
+                </div>
+                <div class="card-action">
+                    <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
+                </div>
+            </div>
+            <div th:if="${page.totalPages > 1}" class="card-content page-info">
+                <div th:replace="fragments/pagination :: pagination(${action})"></div>
+            </div>
 
+        </div>
+    </div>
     <div th:replace="fragments/filter :: addButton('/articles/add')"></div>
 </main>
 </html>

@@ -26,11 +26,11 @@
 </th:block>
 
 <div th:fragment="filterControls(url)">
-    <button id="submit-btn" type="submit" class="waves-effect waves-light btn">
+    <button id="submit-btn" type="submit" class="waves-effect waves-light btn indigo darken-4">
         <i class="material-icons">search</i>
     </button>
     <a th:href="@{${url}}" id="reset-btn" type="button"
-       class="waves-effect waves-light btn btn-cancel">
+       class="waves-effect waves-light btn btn-cancel indigo darken-4">
         <i class="material-icons">clear</i>
     </a>
     <!--<a class="btn filter-btn btn-small"><i class="material-icons">filter_list</i></a>-->
@@ -63,7 +63,7 @@
 </th:block>
 
 <div th:fragment="addButton(addUrl)" class="fixed-action-btn">
-    <a th:href="@{${addUrl}}" class="btn-floating btn-large">
+    <a th:href="@{${addUrl}}" class="btn-floating btn-large indigo darken-4">
         <i class="large material-icons">add</i>
     </a>
 </div>
