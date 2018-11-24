@@ -6,9 +6,9 @@ import lombok.Data;
 import org.communis.javawebintro.entity.User;
 import org.communis.javawebintro.enums.UserRole;
 import org.communis.javawebintro.enums.UserStatus;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,18 +17,18 @@ import java.util.Date;
 public class UserWrapper implements ObjectWrapper<User>, Serializable {
     protected Long id;
 
-    @NotNull
+    @NotEmpty
     @Size(max = 100)
     protected String firstName;
 
     @Size(max = 100)
     protected String lastName;
 
-    @NotNull
+    @NotEmpty
     @Size(max = 50)
     private String login;
 
-    @NotNull
+    @NotEmpty
     @Size(max = 150)
     private String email;
 

@@ -38,7 +38,7 @@
                             <label for="title">Заголовок</label>
                         </div>
                         <div class="input-field">
-                            <select id="category" th:field="${article.categoryId}">
+                            <select id="category" th:field="${article.categoryId}" required>
                                 <option th:value="${null}">Не назначена</option>
                                 <option th:each="cat : ${categories}"
                                         th:value="${cat.id}"

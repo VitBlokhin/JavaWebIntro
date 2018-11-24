@@ -8,21 +8,25 @@
 
     <title th:replace="${title}"></title>
 
+    <!-- css -->
     <link rel="stylesheet" th:href="@{/webjars/materializecss/css/materialize.min.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <!-- lib js -->
+    <th:block th:if="${links != null}">
+        <th:block th:replace="${links}"/>
+    </th:block>
+
+    <!-- js -->
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/jquery-form/jquery.form.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/materializecss/js/materialize.min.js}"></script>
-
-    <!-- css -->
-    <!--<link rel="stylesheet" type="text/css" th:href="@{/static/css/main.css}"/>-->
-
-    <!-- js -->
     <script th:src="@{/static/js/utils/materialize-functions.js}"></script>
     <script th:src="@{/static/js/utils/http-response.js}"></script>
     <script th:src="@{/static/js/main.js}"></script>
+
+    <th:block th:if="${scripts != null}">
+        <th:block th:replace="${scripts}"/>
+    </th:block>
 
     <script> var contextRoot = '[[@{/}]]'; </script>
 
@@ -30,11 +34,4 @@
         <meta http-equiv="refresh" th:content="|0;url=@{/badbrowser}|">
     </noscript>
 
-    <th:block th:if="${links != null}">
-        <th:block th:replace="${links}"/>
-    </th:block>
-
-    <th:block th:if="${scripts != null}">
-        <th:block th:replace="${scripts}"/>
-    </th:block>
 </head>

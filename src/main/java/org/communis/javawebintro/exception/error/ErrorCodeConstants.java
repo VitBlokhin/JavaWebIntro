@@ -55,6 +55,8 @@ public class ErrorCodeConstants {
     public static final ErrorCodeIdentifier ARTICLE_CATEGORY_NOT_FOUND = ARTICLE_ADD_ERROR.branch("3");
 
     public static final ErrorCodeIdentifier ARTICLE_UPDATE_ERROR = ARTICLE.branch("4");
+    public static final ErrorCodeIdentifier ARTICLE_WRONG_AUTHOR = ARTICLE_UPDATE_ERROR.branch("1");
+
     public static final ErrorCodeIdentifier ARTICLE_DELETE_ERROR = ARTICLE.branch("5");
 
     public static final ErrorCodeIdentifier ARTICLE_STATUS_ERROR = ARTICLE.branch("6");
@@ -102,6 +104,8 @@ public class ErrorCodeConstants {
         messages.put(ARTICLE_ALREADY_EXIST, "Заметка уже существует");
 
         messages.put(ARTICLE_UPDATE_ERROR, "Ошибка при изменении заметки");
+        messages.put(ARTICLE_WRONG_AUTHOR, "Нельзя изменять чужие заметки");
+
         messages.put(ARTICLE_DELETE_ERROR, "Ошибка при удалении заметки");
 
         messages.put(ARTICLE_STATUS_ERROR, "Ошибка при изменении статуса заметки");

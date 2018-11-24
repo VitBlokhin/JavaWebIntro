@@ -43,7 +43,7 @@
                 <div class="card-action" sec:authorize="hasRole('ROLE_ADMIN')">
                     <button onclick="ArticleController.show()"
                             th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).NEW}"
-                            type="button" class="waves-effect waves-light btn blue darken-4">Принять
+                            type="button" class="waves-effect waves-light btn indigo darken-4">Принять
                     </button>
                     <button onclick="ArticleController.hide()"
                             th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).SHOWN}"

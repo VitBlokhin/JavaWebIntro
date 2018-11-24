@@ -24,7 +24,7 @@
             </div>
         </div>
     </nav>
-    <diw class="row">
+    <div class="row">
         <div class="col s12">
             <div class="card-panel">
                 <div th:replace="fragments/filter :: filter('/categories/' + ${category.id})"></div>
@@ -40,10 +40,10 @@
                 </div>
             </div>
             <div th:if="${page.totalPages > 1}" class="card-content page-info">
-                <div th:replace="fragments/pagination :: pagination('/')"></div>
+                <div th:replace="fragments/pagination :: pagination('/categories/' + ${category.id})"></div>
             </div>
         </div>
-    </diw>
+    </div>
 
     <div th:replace="fragments/filter :: addButton('/articles/add')"></div>
 </main>

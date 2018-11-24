@@ -3,7 +3,7 @@ package org.communis.javawebintro.dto;
 import lombok.Data;
 import org.communis.javawebintro.entity.Category;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Date;
 public class CategoryWrapper implements ObjectWrapper<Category>, Serializable {
     private Long id;
 
-    @NotNull
+    @NotEmpty
     @Size(max = 100)
     private String name;
 

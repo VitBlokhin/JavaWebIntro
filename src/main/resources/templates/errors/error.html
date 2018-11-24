@@ -6,10 +6,14 @@
 <body>
 <header th:replace="fragments/header :: header(error, user)"></header>
 
-<div class="error-page-div">
-    <h1 class="error-code" th:text="|Ошибка ${errorCode}|">Ошибка 404</h1>
-    <p class="error-page-message" th:text="${errorMessage}">Страница не найдена</p>
-</div>
+<main>
+    <div class="row">
+        <div class="col s12">
+            <h1 class="error-code" th:text="|Ошибка ${errorCode}|">Ошибка 404</h1>
+            <p class="error-page-message" th:text="${errorMessage}">Страница не найдена</p>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>

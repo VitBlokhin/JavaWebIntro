@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Service("articleService")
 @Transactional(rollbackFor = ServerException.class)
@@ -57,11 +58,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Long create(ArticleWrapper articleWrapper) throws ServerException {
         try {
-            final Article article = new Article();
-            if (articleRepository.findFirstByTitleAndContent(article.getTitle(), article.getContent()).isPresent()) {
-                throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_ALREADY_EXIST));
-            }
+            validateArticle(articleWrapper);
 
+            final Article article = new Article();
             articleWrapper.fromWrapper(article);
 
             categoryRepository.findById(articleWrapper.getCategoryId()).ifPresent(c -> article.setCategoryId(c.getId()));
@@ -88,11 +87,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Long update(ArticleWrapper articleWrapper) throws ServerException {
         try {
+            validateArticle(articleWrapper);
+
             Article article = getArticle(articleWrapper.getId());
+            if(!Objects.equals(userService.getCurrentUser().getId(), article.getAuthorId())){
+                throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_WRONG_AUTHOR));
+            }
+
             articleWrapper.fromWrapper(article);
             article = articleRepository.save(article);
 
             return article.getId();
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_UPDATE_ERROR), ex);
         }
@@ -158,5 +165,13 @@ public class ArticleServiceImpl implements ArticleService {
     private Article getArticle(Long id) throws ServerException {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_INFO_ERROR)));
+    }
+
+    private boolean validateArticle(ArticleWrapper articleWrapper) throws ServerException {
+        if(articleRepository.findFirstByTitleAndContent(articleWrapper.getTitle(), articleWrapper.getContent()).isPresent()){
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_ALREADY_EXIST));
+        }
+
+        return true;
     }
 }

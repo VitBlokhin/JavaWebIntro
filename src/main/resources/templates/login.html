@@ -19,20 +19,20 @@
                 </div>
                 <div class="login-body">
                     <form id="login-form" class="form-horizontal" th:action="@{/login}" method="post">
-                        <div hidden id="error" class="input-field login-error">
-                            <i class="material-icons">error</i>
-                            <span></span>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Имя пользователя *" id="username" type="text" name="username"
+                                       autofocus="autofocus"
+                                       class="validate required" maxlength="50"/>
+                                <label id="username-label" for="username"></label>
+                            </div>
                         </div>
-                        <div class="input-field">
-                            <input placeholder="Имя пользователя *" id="username" type="text" name="username"
-                                   autofocus="autofocus"
-                                   class="validate required" maxlength="50"/>
-                            <label id="username-label" for="username"></label>
-                        </div>
-                        <div class="input-field">
-                            <input placeholder="Пароль *" id="password" type='password' name='password'
-                                   class="validate required" maxlength="32"/>
-                            <label id="password-label" for="password"></label>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Пароль *" id="password" type='password' name='password'
+                                       class="validate required" maxlength="32"/>
+                                <label id="password-label" for="password"></label>
+                            </div>
                         </div>
                         <div class="center-align">
                             <button id="submit" type="submit"
@@ -41,6 +41,7 @@
                             </button>
                         </div>
                     </form>
+                    <div th:replace="fragments/error :: errorFragment"></div>
                 </div>
             </div>
         </div>

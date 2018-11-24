@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.communis.javawebintro.entity.Article;
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -13,9 +14,10 @@ import java.util.Date;
 public class ArticleWrapper implements ObjectWrapper<Article>, Serializable {
     private Long id;
 
+    @NotEmpty
     private String title;
 
-    @NotNull
+    @NotEmpty
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
@@ -26,6 +28,7 @@ public class ArticleWrapper implements ObjectWrapper<Article>, Serializable {
 
     private ArticleStatus status;
 
+    @NotNull
     private Long categoryId;
 
     private Long authorId;
