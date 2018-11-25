@@ -57,12 +57,15 @@ public class ErrorCodeConstants {
     public static final ErrorCodeIdentifier ARTICLE_UPDATE_ERROR = ARTICLE.branch("4");
     public static final ErrorCodeIdentifier ARTICLE_WRONG_AUTHOR = ARTICLE_UPDATE_ERROR.branch("1");
 
+    public static final ErrorCodeIdentifier ARTICLE_PRIVACY_ERROR = ARTICLE_UPDATE_ERROR.branch("2");
+    public static final ErrorCodeIdentifier ARTICLE_SHOW_ERROR = ARTICLE_PRIVACY_ERROR.branch("1");
+    public static final ErrorCodeIdentifier ARTICLE_HIDE_ERROR = ARTICLE_PRIVACY_ERROR.branch("2");
+
     public static final ErrorCodeIdentifier ARTICLE_DELETE_ERROR = ARTICLE.branch("5");
 
     public static final ErrorCodeIdentifier ARTICLE_STATUS_ERROR = ARTICLE.branch("6");
-    public static final ErrorCodeIdentifier ARTICLE_SHOW_ERROR = ARTICLE_STATUS_ERROR.branch("1");
-    public static final ErrorCodeIdentifier ARTICLE_HIDE_ERROR = ARTICLE_STATUS_ERROR.branch("2");
-    public static final ErrorCodeIdentifier ARTICLE_BLOCK_ERROR = ARTICLE_STATUS_ERROR.branch("3");
+    public static final ErrorCodeIdentifier ARTICLE_BLOCK_ERROR = ARTICLE_STATUS_ERROR.branch("1");
+    public static final ErrorCodeIdentifier ARTICLE_UNBLOCK_ERROR = ARTICLE_STATUS_ERROR.branch("1");
 
     static {
         messages.put(DATA_NOT_FOUND, "Ошибка при получении данных");
@@ -101,6 +104,8 @@ public class ErrorCodeConstants {
         messages.put(ARTICLE_LIST_ERROR, "Ошибка при получении реестра заметок");
         messages.put(ARTICLE_INFO_ERROR, "Ошибка при получении заметки");
         messages.put(ARTICLE_ADD_ERROR, "Ошибка при добавлении заметки");
+        messages.put(ARTICLE_CATEGORY_NOT_FOUND, "Категория не найдена");
+        messages.put(ARTICLE_AUTHOR_NOT_FOUND, "Автор не найден");
         messages.put(ARTICLE_ALREADY_EXIST, "Заметка уже существует");
 
         messages.put(ARTICLE_UPDATE_ERROR, "Ошибка при изменении заметки");
@@ -108,9 +113,12 @@ public class ErrorCodeConstants {
 
         messages.put(ARTICLE_DELETE_ERROR, "Ошибка при удалении заметки");
 
-        messages.put(ARTICLE_STATUS_ERROR, "Ошибка при изменении статуса заметки");
-        messages.put(ARTICLE_SHOW_ERROR, "Ошибка при подтверждении заметки");
+        messages.put(ARTICLE_PRIVACY_ERROR, "Ошибка при изменении типа заметки");
+        messages.put(ARTICLE_SHOW_ERROR, "Ошибка при раскрытии заметки");
         messages.put(ARTICLE_HIDE_ERROR, "Ошибка при скрытии заметки");
+
+        messages.put(ARTICLE_STATUS_ERROR, "Ошибка при изменении статуса заметки");
         messages.put(ARTICLE_BLOCK_ERROR, "Ошибка при блокировке заметки");
+        messages.put(ARTICLE_UNBLOCK_ERROR, "Ошибка при разблокировке заметки");
     }
 }

@@ -38,7 +38,7 @@
                             <label for="title">Заголовок</label>
                         </div>
                         <div class="input-field">
-                            <select id="category" th:field="${article.categoryId}" required>
+                            <select id="category" th:field="${article.category.id}" required>
                                 <option th:value="${null}">Не назначена</option>
                                 <option th:each="cat : ${categories}"
                                         th:value="${cat.id}"
@@ -48,8 +48,8 @@
                         </div>
                         <div class="input-field">
                             <textarea id="content" name="content"
-                                  class="materialize-textarea" required
-                                  th:field="${article.content}"></textarea>
+                                      class="materialize-textarea" required
+                                      th:field="${article.content}"></textarea>
                             <label for="content">Текст заметки</label>
                         </div>
                     </div>

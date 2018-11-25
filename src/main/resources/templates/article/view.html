@@ -7,9 +7,8 @@
 <head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
     <title th:text="|Заметка|"></title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
-
     <script sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/static/js/admin/articles/controller.js}"></script>
+    <script sec:authorize="hasRole('ROLE_USER')" th:src="@{/static/js/articles/controller.js}"></script>
 
 </head>
 <body>
@@ -20,7 +19,7 @@
             <div class="row">
                 <div class="col s12">
                     <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
-                    <a th:href="@{'/categories/' + ${category.id}}" th:text="${category.name}"
+                    <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}"
                        class="breadcrumb"></a>
                     <a th:href="@{'/articles/' + ${article.id}}" th:text="${article.title}"
                        class="breadcrumb"></a>
@@ -33,26 +32,45 @@
             <div class="card">
                 <div class="card-content">
                     <input type="hidden" id="id" th:field="${article.id}"/>
-                    <span class="card-title" th:text="|${article.getTitle()}|"></span>
-                    <p th:text="|Автор: ${user.getFullName()}|"></p>
+                    <span class="card-title" th:text="|${article.title}|"></span>
+                    <p th:text="|Автор: ${article.author.getFullName()}|"></p>
                     <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-                    <a th:href="@{'/categories/' + ${article.categoryId}}" th:text="|${category.name}|"></a>
+                    <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}"></a>
                     <p th:text="|${article.content}|"></p>
 
                 </div>
-                <div class="card-action" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <button onclick="ArticleController.show()"
-                            th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).NEW}"
-                            type="button" class="waves-effect waves-light btn indigo darken-4">Принять
-                    </button>
-                    <button onclick="ArticleController.hide()"
-                            th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).SHOWN}"
-                            type="button" class="waves-effect waves-light btn indigo darken-4">Скрыть
-                    </button>
-                    <button onclick="ArticleController.block()"
-                            th:if="${ article.status != T(org.communis.javawebintro.enums.ArticleStatus).BLOCKED}"
-                            type="button" class="waves-effect waves-light btn indigo darken-4">Заблокировать
-                    </button>
+                <div class="card-action">
+                    <th:block th:if="${#authentication.getPrincipal().getUser().getId() == article.author.id}">
+                        <a th:href="@{'/articles/' + ${article.id} + '/edit'}" type="button"
+                           class="waves-effect waves-light btn indigo darken-4">
+                            Редактировать
+                        </a>
+                        <button onclick="ArticleController.show()"
+                                th:if="${article.type == T(org.communis.javawebintro.enums.ArticleType).PRIVATE}"
+                                type="button" class="waves-effect waves-light btn indigo darken-4">
+                            Показать всем
+                        </button>
+                        <button onclick="ArticleController.hide()"
+                                th:if="${article.type == T(org.communis.javawebintro.enums.ArticleType).PUBLIC}"
+                                type="button" class="waves-effect waves-light btn indigo darken-4">
+                            Скрыть
+                        </button>
+                    </th:block>
+
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <button onclick="ArticleController.block()"
+                                th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).ACTIVE}"
+                                type="button" class="waves-effect waves-light btn indigo darken-4">Заблокировать
+                        </button>
+                        <button onclick="ArticleController.unblock()"
+                                th:if="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).BLOCKED}"
+                                type="button" class="waves-effect waves-light btn indigo darken-4">Разблокировать
+                        </button>
+                        <button onclick="ArticleController.delete()"
+                                th:if="${article.status != T(org.communis.javawebintro.enums.ArticleStatus).DELETED}"
+                                type="button" class="waves-effect waves-light btn indigo darken-4">Удалить
+                        </button>
+                    </th:block>
                 </div>
             </div>
         </div>

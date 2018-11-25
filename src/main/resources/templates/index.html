@@ -19,15 +19,17 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title" th:text="|${article.title}|"></span>
-                <p th:text="|${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-                <a th:href="@{'/categories/' + ${article.getCategoryId()}}" th:text="${article.getCategoryId()}"></a>
+                <p th:text="|Автор: ${article.author.getFullName()}|"></p>
+                <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
+                <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}"></a>
+                <p th:text="|${article.content}|"></p>
             </div>
             <div class="card-action">
                 <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
             </div>
         </div>
     </div>
-    <div th:if="${page.totalPages > 1}" class="card-content page-info">
+    <div th:if="${page.totalPages > 1}" class="card-panel">
         <div th:replace="fragments/pagination :: pagination('/')"></div>
     </div>
 

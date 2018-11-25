@@ -10,5 +10,6 @@
     </changeSet>
 
     <include file="01_test_init_db.sql" relativeToChangelogFile="true"/>
+    <include file="02_alter_articles_add_type.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

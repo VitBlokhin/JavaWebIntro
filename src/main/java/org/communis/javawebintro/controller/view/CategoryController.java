@@ -3,6 +3,7 @@ package org.communis.javawebintro.controller.view;
 import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
 import org.communis.javawebintro.dto.filters.ObjectFilter;
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.service.ArticleService;
 import org.communis.javawebintro.service.CategoryService;
@@ -41,7 +42,8 @@ public class CategoryController {
     public ModelAndView getCategory(@PathVariable("id") Long id, ArticleFilterWrapper articleFilter) throws ServerException {
         ModelAndView categoriesPage = new ModelAndView(CATEGORY_VIEWS_PATH + "view");
         articleFilter.setCategoryId(id);
-        //articleFilter.setStatus(ArticleStatus.SHOWN);
+        articleFilter.setType(ArticleType.PUBLIC);
+        articleFilter.setStatus(ArticleStatus.ACTIVE);
         categoriesPage.addObject("filter", articleFilter);
         categoriesPage.addObject("category", categoryService.getById(id));
         categoriesPage.addObject("page", articleService.getPage(articleFilter));

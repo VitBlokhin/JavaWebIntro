@@ -33,7 +33,7 @@ public class Category {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Article> articles;
 
     public Set<Article> getArticles() {

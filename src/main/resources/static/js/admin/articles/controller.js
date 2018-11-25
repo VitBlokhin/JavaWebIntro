@@ -4,13 +4,9 @@ $(document).ready(function () {
 
 ArticleController = {};
 
-ArticleController.edit = function () {
-    sendRequest('#article-form', null, 'PATCH', request);
-};
-
-ArticleController.delete = function () {
+ArticleController.hide = function () {
     var id = $('input[name="id"]').val();
-    sendRequest(null, '/admin/articles/' + id, 'DELETE', reload);
+    sendRequest(null, '/admin/articles/' + id + '/hide', 'POST', reload);
 };
 
 ArticleController.show = function () {
@@ -18,12 +14,17 @@ ArticleController.show = function () {
     sendRequest(null, '/admin/articles/' + id + '/show' , 'POST', reload);
 };
 
-ArticleController.hide = function () {
-    var id = $('input[name="id"]').val();
-    sendRequest(null, '/admin/articles/' + id + '/hide', 'POST', reload);
-};
-
 ArticleController.block = function () {
     var id = $('input[name="id"]').val();
     sendRequest(null, '/admin/articles/' + id + '/block', 'POST', reload);
+};
+
+ArticleController.unblock = function () {
+    var id = $('input[name="id"]').val();
+    sendRequest(null, '/admin/articles/' + id + '/unblock', 'POST', reload);
+};
+
+ArticleController.delete = function () {
+    var id = $('input[name="id"]').val();
+    sendRequest(null, '/admin/articles/' + id, 'DELETE', reload);
 };

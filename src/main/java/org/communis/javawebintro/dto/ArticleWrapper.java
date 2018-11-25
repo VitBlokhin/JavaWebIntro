@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.communis.javawebintro.entity.Article;
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -28,10 +29,17 @@ public class ArticleWrapper implements ObjectWrapper<Article>, Serializable {
 
     private ArticleStatus status;
 
-    @NotNull
-    private Long categoryId;
+    private ArticleType type;
 
-    private Long authorId;
+//    @NotNull
+//    private Long categoryId;
+
+    @NotNull
+    private CategoryWrapper category;
+
+    private AuthorWrapper author;
+
+    //private Long authorId;
 
     public ArticleWrapper() {
     }
@@ -49,10 +57,12 @@ public class ArticleWrapper implements ObjectWrapper<Article>, Serializable {
             dateCreate = item.getDateCreate();
             dateClose = item.getDateClose();
             status = item.getStatus();
+            type = item.getType();
             //authorId = item.getAuthor().getId();
             //categoryId = item.getCategory().getId();
-            authorId = item.getAuthorId();
-            categoryId = item.getCategoryId();
+            category = new CategoryWrapper(item.getCategory());
+            author = new AuthorWrapper(item.getAuthor());
+            //categoryId = item.getCategoryId();
         }
     }
 

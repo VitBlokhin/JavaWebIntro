@@ -12,7 +12,8 @@ public interface ArticleService {
     Long update(ArticleWrapper articleWrapper) throws ServerException;
     void delete(Long id) throws ServerException;
 
-    Long show(Long id) throws ServerException;
-    Long hide(Long id) throws ServerException;
+    Long setPublic(Long id) throws ServerException;
+    Long setPrivate(Long id) throws ServerException;
     Long block(Long id) throws ServerException;
+    Long unblock(Long id) throws ServerException;
 }

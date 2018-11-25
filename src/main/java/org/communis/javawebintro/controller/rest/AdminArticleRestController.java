@@ -23,17 +23,17 @@ public class AdminArticleRestController {
     }
 
     @RequestMapping(value = "/{id}/show", method = RequestMethod.POST)
-    public String show(@PathVariable("id") Long id)
+    public String setPublic(@PathVariable("id") Long id)
             throws InvalidDataException, ServerException, NotFoundException {
 
-        return articleService.show(id).toString();
+        return articleService.setPublic(id).toString();
     }
 
     @RequestMapping(value = "/{id}/hide", method = RequestMethod.POST)
-    public String hide(@PathVariable("id") Long id)
+    public String setPrivate(@PathVariable("id") Long id)
             throws InvalidDataException, ServerException, NotFoundException {
 
-        return articleService.hide(id).toString();
+        return articleService.setPrivate(id).toString();
     }
 
     @RequestMapping(value = "/{id}/block", method = RequestMethod.POST)
@@ -41,6 +41,13 @@ public class AdminArticleRestController {
             throws InvalidDataException, ServerException, NotFoundException {
 
         return articleService.block(id).toString();
+    }
+
+    @RequestMapping(value = "/{id}/unblock", method = RequestMethod.POST)
+    public String unblock(@PathVariable("id") Long id)
+            throws InvalidDataException, ServerException, NotFoundException {
+
+        return articleService.unblock(id).toString();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

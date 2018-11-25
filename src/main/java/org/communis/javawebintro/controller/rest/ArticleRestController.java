@@ -38,12 +38,12 @@ public class ArticleRestController {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        articleWrapper.setStatus(ArticleStatus.NEW);
-        articleWrapper.setAuthorId(userService.getCurrentUser().getId());
+        articleWrapper.setStatus(ArticleStatus.ACTIVE);
+        //articleWrapper.setAuthor(userService.getCurrentUser());
         return articleService.create(articleWrapper).toString();
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    @RequestMapping(method = RequestMethod.PATCH)
     public String edit(@Valid ArticleWrapper articleWrapper, BindingResult bindingResult)
             throws InvalidDataException, NotFoundException, ServerException {
         if (bindingResult.hasErrors()) {
@@ -57,5 +57,19 @@ public class ArticleRestController {
             throws NotFoundException, ServerException {
 
         articleService.delete(id);
+    }
+
+    @RequestMapping(value = "/{id}/show", method = RequestMethod.POST)
+    public String setPublic(@PathVariable("id") Long id)
+            throws InvalidDataException, ServerException, NotFoundException {
+
+        return articleService.setPublic(id).toString();
+    }
+
+    @RequestMapping(value = "/{id}/hide", method = RequestMethod.POST)
+    public String setPrivate(@PathVariable("id") Long id)
+            throws InvalidDataException, ServerException, NotFoundException {
+
+        return articleService.setPrivate(id).toString();
     }
 }

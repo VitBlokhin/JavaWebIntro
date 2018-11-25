@@ -2,12 +2,11 @@ package org.communis.javawebintro.repository.specifications;
 
 import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
 import org.communis.javawebintro.entity.Article;
+import org.communis.javawebintro.entity.Category;
+import org.communis.javawebintro.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +29,22 @@ public abstract class ArticleSpecification implements Specification<Article> {
                         );
                     }
                     if (filter.getCategoryId() != null) {
-                        predicates.add(criteriaBuilder.equal(root.get("categoryId"), filter.getCategoryId()));
+                        Join<Article, Category> category = root.join("category");
+
+                        predicates.add(criteriaBuilder.equal(category.get("id"), filter.getCategoryId()));
+                        //predicates.add(criteriaBuilder.equal(root.get("categoryId"), filter.getCategoryId()));
                     }
                     if (filter.getAuthorId() != null) {
-                        predicates.add(criteriaBuilder.equal(root.get("authorId"), filter.getAuthorId()));
+                        Join<Article, User> author = root.join("author");
+
+                        predicates.add(criteriaBuilder.equal(author.get("id"), filter.getAuthorId()));
+                        //predicates.add(criteriaBuilder.equal(root.get("authorId"), filter.getAuthorId()));
                     }
                     if(filter.getStatus() != null){
                         predicates.add(criteriaBuilder.equal(root.get("status"), filter.getStatus()));
+                    }
+                    if(filter.getType() != null){
+                        predicates.add(criteriaBuilder.equal(root.get("type"), filter.getType()));
                     }
                 }
                 return criteriaBuilder.and((Predicate[]) predicates.toArray(new Predicate[predicates.size()]));

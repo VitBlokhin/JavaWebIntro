@@ -4,6 +4,7 @@ import org.communis.javawebintro.dto.ArticleWrapper;
 import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
 import org.communis.javawebintro.entity.Article;
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
@@ -63,11 +64,13 @@ public class ArticleServiceImpl implements ArticleService {
             final Article article = new Article();
             articleWrapper.fromWrapper(article);
 
-            categoryRepository.findById(articleWrapper.getCategoryId()).ifPresent(c -> article.setCategoryId(c.getId()));
+            categoryRepository.findById(articleWrapper.getCategory().getId()).ifPresent(article::setCategory);
 
-            article.setAuthorId(userService.getCurrentUser().getId());
+            //article.setAuthorId(userService.getCurrentUser().getId());
+            article.setAuthor(userService.getCurrentUser());
 
-            article.setStatus(ArticleStatus.NEW);
+            article.setStatus(ArticleStatus.ACTIVE);
+            article.setType(ArticleType.PRIVATE);
             article.setDateCreate(new Date());
             articleRepository.save(article);
 
@@ -90,11 +93,13 @@ public class ArticleServiceImpl implements ArticleService {
             validateArticle(articleWrapper);
 
             Article article = getArticle(articleWrapper.getId());
-            if(!Objects.equals(userService.getCurrentUser().getId(), article.getAuthorId())){
+            if (!Objects.equals(userService.getCurrentUser().getId(), article.getAuthor().getId())) {
                 throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_WRONG_AUTHOR));
             }
 
             articleWrapper.fromWrapper(article);
+            categoryRepository.findById(articleWrapper.getCategory().getId()).ifPresent(article::setCategory);
+
             article = articleRepository.save(article);
 
             return article.getId();
@@ -121,11 +126,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Long show(Long id) throws ServerException {
+    public Long setPublic(Long id) throws ServerException {
         try {
             Article article = getArticle(id);
 
-            article.setStatus(ArticleStatus.SHOWN);
+            article.setType(ArticleType.PUBLIC);
             articleRepository.save(article);
 
             return article.getId();
@@ -135,11 +140,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Long hide(Long id) throws ServerException {
+    public Long setPrivate(Long id) throws ServerException {
         try {
             Article article = getArticle(id);
 
-            article.setStatus(ArticleStatus.HIDDEN);
+            article.setType(ArticleType.PRIVATE);
             articleRepository.save(article);
 
             return article.getId();
@@ -162,16 +167,43 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
+    @Override
+    public Long unblock(Long id) throws ServerException {
+        try {
+            Article article = getArticle(id);
+
+            article.setStatus(ArticleStatus.ACTIVE);
+            articleRepository.save(article);
+
+            return article.getId();
+        } catch (Exception ex) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_UNBLOCK_ERROR), ex);
+        }
+    }
+
     private Article getArticle(Long id) throws ServerException {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_INFO_ERROR)));
     }
 
     private boolean validateArticle(ArticleWrapper articleWrapper) throws ServerException {
-        if(articleRepository.findFirstByTitleAndContent(articleWrapper.getTitle(), articleWrapper.getContent()).isPresent()){
+        if (articleRepository.findFirstByTitleAndContent(articleWrapper.getTitle(), articleWrapper.getContent())
+                .isPresent()) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_ALREADY_EXIST));
         }
 
+        if (!categoryRepository.findById(articleWrapper.getCategory().getId()).isPresent()) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_CATEGORY_NOT_FOUND));
+        }
+
+        return true;
+    }
+
+    private boolean checkAuthor(ArticleWrapper articleWrapper) throws ServerException {
+        Article article = getArticle(articleWrapper.getId());
+        if (!Objects.equals(userService.getCurrentUser().getId(), article.getAuthor().getId())) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_WRONG_AUTHOR));
+        }
         return true;
     }
 }

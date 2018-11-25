@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -36,45 +37,49 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private ArticleStatus status;
 
-//    @Getter(AccessLevel.NONE)
-//    @Setter(AccessLevel.NONE)
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
-//    private Category category;
-
-//    @Getter(AccessLevel.NONE)
-//    @Setter(AccessLevel.NONE)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
-//    private User author;
+    @Column(name = "TYPE")
+    @Enumerated(EnumType.STRING)
+    private ArticleType type;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @Column(name = "AUTHOR_ID")
-    private Long authorId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
+    private Category category;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @Column(name = "CATEGORY_ID")
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
+    private User author;
 
-    public Long getAuthorId() {
-        return authorId;
-    }
+//    @Getter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
+//    @Column(name = "AUTHOR_ID")
+//    private Long authorId;
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
+//    @Getter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
+//    @Column(name = "CATEGORY_ID")
+//    private Long categoryId;
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
+//    public Long getAuthorId() {
+//        return authorId;
+//    }
+//
+//    public void setAuthorId(Long authorId) {
+//        this.authorId = authorId;
+//    }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
+//    public Long getCategoryId() {
+//        return categoryId;
+//    }
+//
+//    public void setCategoryId(Long categoryId) {
+//        this.categoryId = categoryId;
+//    }
 
-    /*    public Category getCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -90,7 +95,7 @@ public class Article {
     public void setAuthor(User author) {
         this.author = author;
         author.addArticle(this);
-    }*/
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -105,6 +110,7 @@ public class Article {
         if (dateCreate != null ? !dateCreate.equals(article.dateCreate) : article.dateCreate != null) return false;
         if (dateClose != null ? !dateClose.equals(article.dateClose) : article.dateClose != null) return false;
         if (status != null ? !status.equals(article.status) : article.status != null) return false;
+        if (type != null ? !type.equals(article.type) : article.type != null) return false;
 
         return true;
     }
@@ -117,6 +123,7 @@ public class Article {
         result = 31 * result + (dateCreate != null ? dateCreate.hashCode() : 0);
         result = 31 * result + (dateClose != null ? dateClose.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 }

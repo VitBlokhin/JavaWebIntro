@@ -59,7 +59,7 @@ public class User {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "authorId", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Article> articles;
 
 

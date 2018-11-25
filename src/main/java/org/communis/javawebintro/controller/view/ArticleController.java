@@ -4,11 +4,14 @@ import org.communis.javawebintro.dto.ArticleWrapper;
 import org.communis.javawebintro.dto.CategoryWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
+import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.service.ArticleService;
 import org.communis.javawebintro.service.CategoryService;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,8 @@ public class ArticleController {
     @RequestMapping(value = {""}, method = RequestMethod.GET)
     public ModelAndView getIndexPage(ArticleFilterWrapper articleFilter) throws ServerException {
         ModelAndView indexPage = new ModelAndView(ARTICLE_VIEWS_PATH + "list");
+        articleFilter.setType(ArticleType.PUBLIC);
+        articleFilter.setStatus(ArticleStatus.ACTIVE);
         indexPage.addObject("filter", articleFilter);
         indexPage.addObject("page", articleService.getPage(articleFilter));
         return indexPage;
@@ -50,12 +55,28 @@ public class ArticleController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView getArticle(@PathVariable("id") Long id) throws ServerException {
         ArticleWrapper articleWrapper = articleService.getById(id);
-        CategoryWrapper categoryWrapper = categoryService.getById(articleWrapper.getCategoryId());
-        UserWrapper userWrapper = userService.getById(articleWrapper.getAuthorId());
+        //CategoryWrapper categoryWrapper = categoryService.getById(articleWrapper.getCategoryId());
+        //UserWrapper userWrapper = userService.getById(articleWrapper.getAuthorId());
 
         ModelAndView articlePage = new ModelAndView(ARTICLE_VIEWS_PATH + "view");
         articlePage.addObject("article", articleWrapper);
-        articlePage.addObject("category", categoryWrapper);
+        //articlePage.addObject("category", categoryWrapper);
+        //articlePage.addObject("user", userWrapper);
+        return articlePage;
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    public ModelAndView getEdit(@PathVariable("id") Long id) throws ServerException {
+        ArticleWrapper articleWrapper = articleService.getById(id);
+        UserWrapper userWrapper = new UserWrapper(userService.getCurrentUser());
+
+        if(!userWrapper.getId().equals(articleWrapper.getAuthor().getId())) {
+            throw new AccessDeniedException("Доступ к редактированию чужих заметок запрещен");
+        }
+
+        ModelAndView articlePage = new ModelAndView(ARTICLE_VIEWS_PATH + "edit");
+        articlePage.addObject("article", articleWrapper);
+        articlePage.addObject("categories", categoryService.getAllActive());
         articlePage.addObject("user", userWrapper);
         return articlePage;
     }

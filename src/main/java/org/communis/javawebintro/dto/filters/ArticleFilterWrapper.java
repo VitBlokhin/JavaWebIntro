@@ -1,11 +1,13 @@
 package org.communis.javawebintro.dto.filters;
 
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 
 public class ArticleFilterWrapper extends ObjectFilter {
     private Long categoryId;
     private Long authorId;
     private ArticleStatus status;
+    private ArticleType type;
 
     public Long getCategoryId() {
         return categoryId;
@@ -29,5 +31,13 @@ public class ArticleFilterWrapper extends ObjectFilter {
 
     public void setStatus(ArticleStatus status) {
         this.status = status;
+    }
+
+    public ArticleType getType() {
+        return type;
+    }
+
+    public void setType(ArticleType type) {
+        this.type = type;
     }
 }
