@@ -4,8 +4,8 @@
 
 <header th:fragment="header(item, user)">
     <div class="navbar-fixed">
-        <nav class="nav-extended">
-            <div class="nav-wrapper indigo darken-4">
+        <nav class="nav-extended indigo darken-4">
+            <div class="nav-wrapper">
                 <a class="brand-logo center" th:href="@{/}">Java Web Intro</a>
                 <ul id="nav-mobile" class="left">
                     <li><a href="#" data-activates="slide-out" id="collapse-btn"><i class="material-icons">menu</i></a>
@@ -13,20 +13,22 @@
                 </ul>
             </div>
 
-            <!--<div class="nav-content row">-->
-            <!--<ul class="tabs tabs-transparent">-->
-            <!--<li class="tab">-->
-            <!--<a th:class="${item == 'test1'} ? 'active' : ''" target="_self"-->
-            <!--th:href="@{/test1}">-->
-            <!--Test 1</a>-->
-            <!--</li>-->
-            <!--<li class="tab">-->
-            <!--<a th:class="${item == 'test2'} ? 'active' : ''" target="_self"-->
-            <!--th:href="@{/test2}">-->
-            <!--Test 2</a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</div>-->
+            <!--<div class="nav-content">
+                <ul class="tabs tabs-transparent">
+                    <li class="tab">
+                        <a th:class="${item == 'categories'} ? 'active' : ''" target="_self"
+                           th:href="@{/categories}">
+                            Категории
+                        </a>
+                    </li>
+                    <li class="tab">
+                        <a th:class="${item == 'articles'} ? 'active' : ''" target="_self"
+                           th:href="@{/articles}">
+                            Заметки
+                        </a>
+                    </li>
+                </ul>
+            </div>-->
         </nav>
 
     </div>
@@ -68,16 +70,20 @@
             <div class="divider"></div>
         </li>
         <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
-            th:class="${item == 'addarticle'} ? 'indigo lighten-5' : ''">
-            <a th:href="@{/articles/add}">Новая заметка</a>
+            th:class="${item == 'categories'} ? 'indigo lighten-5' : ''">
+            <a th:href="@{/categories}">Категории</a>
+        </li>
+        <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
+            th:class="${item == 'articles'} ? 'indigo lighten-5' : ''">
+            <a th:href="@{/articles}">Заметки</a>
         </li>
         <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
             th:class="${item == 'myarticles'} ? 'indigo lighten-5' : ''">
             <a th:href="@{/articles/my}">Мои заметки</a>
         </li>
         <li sec:authorize="!hasRole('ROLE_ANONYMOUS')"
-            th:class="${item == 'categories'} ? 'indigo lighten-5' : ''">
-            <a th:href="@{/categories}">Категории</a>
+            th:class="${item == 'addarticle'} ? 'indigo lighten-5' : ''">
+            <a th:href="@{/articles/add}">Новая заметка</a>
         </li>
         <li sec:authorize="!hasRole('ROLE_ANONYMOUS')">
             <div class="divider"></div>

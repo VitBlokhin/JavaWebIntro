@@ -1,5 +1,6 @@
 package org.communis.javawebintro.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.communis.javawebintro.entity.Category;
 
@@ -16,7 +17,10 @@ public class CategoryWrapper implements ObjectWrapper<Category>, Serializable {
     @Size(max = 100)
     private String name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateOpen;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dateClose;
 
     public CategoryWrapper() {

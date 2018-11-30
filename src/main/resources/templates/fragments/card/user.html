@@ -18,121 +18,123 @@
         </div>
     </nav>
 
-    <div class="row">
-        <div class="col s12 m7">
-            <div class="card-panel">
-                <h5>Личная информация</h5>
-                <form id="user-form" class="form-horizontal" method="PATCH"
-                      th:action="${action}">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m7">
+                <div class="card-panel">
+                    <h5>Личная информация</h5>
+                    <form id="user-form" class="form-horizontal" method="PATCH"
+                          th:action="${action}">
 
-                    <input type="hidden" name="id" th:field="${user.id}"/>
+                        <input type="hidden" name="id" th:field="${user.id}"/>
 
-                    <div class="row">
-                        <div class="col s6">
-                            <div class="input-field">
-                                <input id="name" name="firstName" type="text"
-                                       class="required validate" maxlength="100"
-                                       th:field="${user.firstName}"/>
-                                <label for="name">Имя</label>
+                        <div class="row">
+                            <div class="col s6">
+                                <div class="input-field">
+                                    <input id="name" name="firstName" type="text"
+                                           class="required validate" maxlength="100"
+                                           th:field="${user.firstName}"/>
+                                    <label for="name">Имя</label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="second-name" name="lastName" type="text"
+                                           maxlength="100"
+                                           th:field="${user.lastName}"/>
+                                    <label for="second-name">Фамилия</label>
+                                </div>
                             </div>
-                            <div class="input-field">
-                                <input id="second-name" name="lastName" type="text"
-                                       maxlength="100"
-                                       th:field="${user.lastName}"/>
-                                <label for="second-name">Фамилия</label>
+                            <div class="col s6">
+                                <div class="input-field">
+                                    <input id="login" name="login"
+                                           class="required validate" maxlength="20" type="text"
+                                           th:field="${user.login}"/>
+                                    <label for="login">Логин</label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="email" name="email" class="required validate email" maxlength="150"
+                                           type="email"
+                                           th:field="${user.email}"/>
+                                    <label for="email">Электронная почта</label>
+                                </div>
+                                <div class="input-field" th:hidden="${action == 'my/'}"
+                                     sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <select id="role" th:field="${user.role}" name="role">
+                                        <option th:value="${null}">Не назначена</option>
+                                        <option th:each="r : ${roles}"
+                                                th:value="${r.toString()}"
+                                                th:text="${r.getStringName()}"></option>
+                                    </select>
+                                    <label for="role">Роль</label>
+                                </div>
+                                <div class="input-field" th:hidden="${action == 'my/'}"
+                                     sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <input name="status" th:field="${user.status}" hidden/>
+                                    <input id="status" th:value="${user.status.getStringName()}" readonly
+                                           type="text"/>
+                                    <label for="status">Статус</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col s6">
-                            <div class="input-field">
-                                <input id="login" name="login"
-                                       class="required validate" maxlength="20" type="text"
-                                       th:field="${user.login}"/>
-                                <label for="login">Логин</label>
-                            </div>
-                            <div class="input-field">
-                                <input id="email" name="email" class="required validate email" maxlength="150"
-                                       type="email"
-                                       th:field="${user.email}"/>
-                                <label for="email">Электронная почта</label>
-                            </div>
-                            <div class="input-field" th:hidden="${action == 'my/'}"
-                                 sec:authorize="hasRole('ROLE_ADMIN')">
-                                <select id="role" th:field="${user.role}" name="role">
-                                    <option th:value="${null}">Не назначена</option>
-                                    <option th:each="r : ${roles}"
-                                            th:value="${r.toString()}"
-                                            th:text="${r.getStringName()}"></option>
-                                </select>
-                                <label for="role">Роль</label>
-                            </div>
-                            <div class="input-field" th:hidden="${action == 'my/'}"
-                                 sec:authorize="hasRole('ROLE_ADMIN')">
-                                <input name="status" th:field="${user.status}" hidden/>
-                                <input id="status" th:value="${user.status.getStringName()}" readonly
-                                       type="text"/>
-                                <label for="status">Статус</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 m6 center-align">
-                            <button onclick="UserController.block()"
-                                    th:if="${action == '/admin/users' && user.status != T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
-                                    type="button" class="waves-effect waves-light btn indigo darken-4">Заблокировать
-                            </button>
+                        <div class="row">
+                            <div class="col s12 m6 center-align">
+                                <button onclick="UserController.block()"
+                                        th:if="${action == '/admin/users' && user.status != T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
+                                        type="button" class="waves-effect waves-light btn indigo darken-4">Заблокировать
+                                </button>
 
-                            <button onclick="UserController.unblock()"
-                                    th:if="${action == '/admin/users' && user.status == T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
-                                    type="button" class="waves-effect waves-light btn indigo darken-4">Разблокировать
-                            </button>
-                        </div>
-                        <div class="col s12 m6 center-align">
-                            <button onclick="UserController.edit()"
-                                    type="button" class="waves-effect waves-light btn indigo darken-4">Cохранить
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12" id="data-success">
-                            <div th:replace="fragments/info :: successFragment"></div>
-                        </div>
-                    </div>
-                    <div th:replace="fragments/error :: errorModalFragment"></div>
-                </form>
-            </div>
-
-
-        </div>
-        <div class="col s12 m5">
-            <div class="card-panel">
-                <h5>Смена пароля</h5>
-                <form id="password-form" class="form-horizontal" method="PATCH"
-                      th:action="${action} + '/password'">
-                    <input type="hidden" name="id" th:field="${user.id}"/>
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="input-field">
-                                <input type="password" id="password" name="password"
-                                       class="required validate" maxlength="32"/>
-                                <label for="password">Новый пароль</label>
+                                <button onclick="UserController.unblock()"
+                                        th:if="${action == '/admin/users' && user.status == T(org.communis.javawebintro.enums.UserStatus).BLOCKED}"
+                                        type="button" class="waves-effect waves-light btn indigo darken-4">
+                                    Разблокировать
+                                </button>
                             </div>
-                            <div class="input-field">
-                                <input type="password" id="confirmPassword" name="confirmPassword"
-                                       class="required validate" maxlength="32"/>
-                                <label for="confirmPassword">Повторите пароль</label>
-                            </div>
-                            <div class="center-align">
-                                <button onclick="UserController.password()"
-                                        type="button" class="waves-effect waves-light btn indigo darken-4">Сменить пароль
+                            <div class="col s12 m6 center-align">
+                                <button onclick="UserController.edit()"
+                                        type="button" class="waves-effect waves-light btn indigo darken-4">Cохранить
                                 </button>
                             </div>
                         </div>
-                    </div>
-                    <div id="password-success">
-                        <div th:replace="fragments/info :: successFragment"></div>
-                        <div th:replace="fragments/error :: errorFragment"></div>
-                    </div>
-                </form>
+                        <div class="row">
+                            <div class="col s12" id="data-success">
+                                <div th:replace="fragments/info :: successFragment"></div>
+                            </div>
+                        </div>
+                        <div th:replace="fragments/error :: errorModalFragment"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="col s12 m5">
+                <div class="card-panel">
+                    <h5>Смена пароля</h5>
+                    <form id="password-form" class="form-horizontal" method="PATCH"
+                          th:action="${action} + '/password'">
+                        <input type="hidden" name="id" th:field="${user.id}"/>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="input-field">
+                                    <input type="password" id="password" name="password"
+                                           class="required validate" maxlength="32"/>
+                                    <label for="password">Новый пароль</label>
+                                </div>
+                                <div class="input-field">
+                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                           class="required validate" maxlength="32"/>
+                                    <label for="confirmPassword">Повторите пароль</label>
+                                </div>
+                                <div class="center-align">
+                                    <button onclick="UserController.password()"
+                                            type="button" class="waves-effect waves-light btn indigo darken-4">Сменить
+                                        пароль
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="password-success">
+                            <div th:replace="fragments/info :: successFragment"></div>
+                            <div th:replace="fragments/error :: errorFragment"></div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

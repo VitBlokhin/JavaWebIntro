@@ -1,7 +1,10 @@
 package org.communis.javawebintro.controller.rest;
 
 import org.communis.javawebintro.dto.ArticleWrapper;
+import org.communis.javawebintro.dto.UserWrapper;
+import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
 import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 import org.communis.javawebintro.exception.InvalidDataException;
 import org.communis.javawebintro.exception.NotFoundException;
 import org.communis.javawebintro.exception.ServerException;
@@ -10,6 +13,8 @@ import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
 import org.communis.javawebintro.service.ArticleService;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +31,29 @@ public class ArticleRestController {
     private final UserService userService;
 
     @Autowired
-    public ArticleRestController(ArticleService articleService,
-                                 UserService userService) {
+    public ArticleRestController(ArticleService articleService, UserService userService) {
         this.articleService = articleService;
         this.userService = userService;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Page<ArticleWrapper> list(ArticleFilterWrapper articleFilter)
+            throws InvalidDataException, ServerException {
+        articleFilter.setType(ArticleType.PUBLIC);
+        articleFilter.setStatus(ArticleStatus.ACTIVE);
+        return articleService.getPage(articleFilter);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ArticleWrapper get(@PathVariable("id") Long id) throws ServerException {
+        ArticleWrapper articleWrapper = articleService.getById(id);
+        if(articleWrapper.getType() == ArticleType.PRIVATE){
+            UserWrapper userWrapper = new UserWrapper(userService.getCurrentUser());
+            if(!userWrapper.getId().equals(articleWrapper.getAuthor().getId())) {
+                throw new AccessDeniedException("Доступ к чужим личным заметкам запрещен");
+            }
+        }
+        return articleService.getById(id);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -38,8 +62,7 @@ public class ArticleRestController {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        articleWrapper.setStatus(ArticleStatus.ACTIVE);
-        //articleWrapper.setAuthor(userService.getCurrentUser());
+        //articleWrapper.setStatus(ArticleStatus.ACTIVE);
         return articleService.create(articleWrapper).toString();
     }
 

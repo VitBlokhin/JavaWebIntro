@@ -15,55 +15,57 @@
             </div>
         </div>
     </nav>
-    <div class="row">
-        <div class="col s12">
-            <div class="card-panel">
-                <h5>Заметка</h5>
-                <form id="article-form" class="form-horizontal" method="PATCH"
-                      th:action="${action}">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel">
+                    <h5>Заметка</h5>
+                    <form id="article-form" class="form-horizontal" method="PATCH"
+                          th:action="${action}">
 
-                    <input type="hidden" name="id" th:field="${article.id}"/>
+                        <input type="hidden" name="id" th:field="${article.id}"/>
 
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="input-field">
-                                <input id="title" type="text"
-                                       class="required validate" maxlength="100"
-                                       th:field="${article.title}"/>
-                                <label for="title">Заголовок</label>
-                            </div>
-                            <div class="input-field">
-                                <select id="category"
-                                        th:field="${article.category.id}" required>
-                                    <option th:value="${null}">Не назначена</option>
-                                    <option th:each="cat : ${categories}"
-                                            th:value="${cat.id}"
-                                            th:text="${cat.name}"
-                                            th:selected="${cat.id == article.category.id}"></option>
-                                </select>
-                                <label for="category">Категория</label>
-                            </div>
-                            <div class="input-field">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="input-field">
+                                    <input id="title" type="text"
+                                           class="required validate" maxlength="100"
+                                           th:field="${article.title}"/>
+                                    <label for="title">Заголовок</label>
+                                </div>
+                                <div class="input-field">
+                                    <select id="category"
+                                            th:field="${article.category.id}" required>
+                                        <option th:value="${null}">Не назначена</option>
+                                        <option th:each="cat : ${categories}"
+                                                th:value="${cat.id}"
+                                                th:text="${cat.name}"
+                                                th:selected="${cat.id == article.category.id}"></option>
+                                    </select>
+                                    <label for="category">Категория</label>
+                                </div>
+                                <div class="input-field">
                                 <textarea id="content" class="materialize-textarea"
                                           th:field="${article.content}"></textarea>
-                                <label for="content">Текст заметки</label>
+                                    <label for="content">Текст заметки</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="center-align col s12">
-                            <button onclick="ArticleController.edit()"
-                                    type="button" class="waves-effect waves-light btn indigo darken-4">
-                                Сохранить
-                            </button>
+                        <div class="row">
+                            <div class="center-align col s12">
+                                <button onclick="ArticleController.edit()"
+                                        type="button" class="waves-effect waves-light btn indigo darken-4">
+                                    Сохранить
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12" id="data-success">
-                            <div th:replace="fragments/info :: successFragment"></div>
+                        <div class="row">
+                            <div class="col s12" id="data-success">
+                                <div th:replace="fragments/info :: successFragment"></div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -84,26 +86,34 @@
             </div>
         </div>
     </nav>
-    <div class="row">
-        <div class="col s12">
-            <div class="card-panel">
-                <div th:replace="fragments/filter :: filter(${action})"></div>
-            </div>
-            <div class="card" th:each="article : ${page}">
-                <div class="card-content">
-                    <span class="card-title" th:text="|${article.title}|"></span>
-                    <p th:text="|Автор: ${article.author.getFullName()}|"></p>
-                    <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-                    <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}"></a>
-                    <p th:text="|${article.content}|"></p>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel">
+                    <div th:replace="fragments/filter :: filter(${action})"></div>
                 </div>
-                <div class="card-action">
-                    <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
+                <div th:class="${article.status == T(org.communis.javawebintro.enums.ArticleStatus).BLOCKED} ? 'card grey lighten-4' : 'card'"
+                     th:each="article : ${page}">
+                    <div class="card-content">
+                        <span class="card-title" th:text="|${article.title}|">Заголовок</span>
+                        <span th:class="${article.type == T(org.communis.javawebintro.enums.ArticleType).PRIVATE} ? 'white-text badge green' : 'white-text badge orange'"
+                              th:text="${article.type.getStringName()}">Тип</span>
+                        <p th:text="|Автор: ${article.author.getFullName()}|">Автор</p>
+                        <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|">Дата публикации</p>
+                        <p>
+                            <span th:text="|Категория: |">Категория: </span>
+                            <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}">Категория</a>
+                        </p>
+                        <p th:text="|${article.content}|"></p>
+                    </div>
+                    <div class="card-action">
+                        <a th:href="@{'/articles/' + ${article.id}}">Подробнее</a>
+                    </div>
                 </div>
-            </div>
 
-            <div th:if="${page.totalPages > 1}" class="card-panel">
-                <div th:replace="fragments/pagination :: pagination(${action})"></div>
+                <div th:if="${page.totalPages > 1}" class="card-panel">
+                    <div th:replace="fragments/pagination :: pagination(${action})"></div>
+                </div>
             </div>
         </div>
     </div>

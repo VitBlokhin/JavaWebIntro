@@ -66,7 +66,6 @@ public class ArticleServiceImpl implements ArticleService {
 
             categoryRepository.findById(articleWrapper.getCategory().getId()).ifPresent(article::setCategory);
 
-            //article.setAuthorId(userService.getCurrentUser().getId());
             article.setAuthor(userService.getCurrentUser());
 
             article.setStatus(ArticleStatus.ACTIVE);

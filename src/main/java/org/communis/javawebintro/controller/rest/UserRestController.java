@@ -36,7 +36,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public UserWrapper editPage(@PathVariable("id") Long id) throws ServerException {
+    public UserWrapper get(@PathVariable("id") Long id) throws ServerException {
         return userService.getById(id);
     }
 

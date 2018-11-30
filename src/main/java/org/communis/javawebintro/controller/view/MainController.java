@@ -1,6 +1,8 @@
 package org.communis.javawebintro.controller.view;
 
 import org.communis.javawebintro.dto.filters.ArticleFilterWrapper;
+import org.communis.javawebintro.enums.ArticleStatus;
+import org.communis.javawebintro.enums.ArticleType;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class MainController {
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public ModelAndView getIndexPage(ArticleFilterWrapper articleFilter) throws ServerException {
         ModelAndView indexPage = new ModelAndView("index");
+        articleFilter.setType(ArticleType.PUBLIC);
+        articleFilter.setStatus(ArticleStatus.ACTIVE);
         indexPage.addObject("filter", articleFilter);
         indexPage.addObject("page", articleService.getPage(articleFilter));
         return indexPage;

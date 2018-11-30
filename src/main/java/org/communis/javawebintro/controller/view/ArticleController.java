@@ -55,13 +55,15 @@ public class ArticleController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView getArticle(@PathVariable("id") Long id) throws ServerException {
         ArticleWrapper articleWrapper = articleService.getById(id);
-        //CategoryWrapper categoryWrapper = categoryService.getById(articleWrapper.getCategoryId());
-        //UserWrapper userWrapper = userService.getById(articleWrapper.getAuthorId());
+        if(articleWrapper.getType() == ArticleType.PRIVATE){
+            UserWrapper userWrapper = new UserWrapper(userService.getCurrentUser());
+            if(!userWrapper.getId().equals(articleWrapper.getAuthor().getId())) {
+                throw new AccessDeniedException("Доступ к чужим личным заметкам запрещен");
+            }
+        }
 
         ModelAndView articlePage = new ModelAndView(ARTICLE_VIEWS_PATH + "view");
         articlePage.addObject("article", articleWrapper);
-        //articlePage.addObject("category", categoryWrapper);
-        //articlePage.addObject("user", userWrapper);
         return articlePage;
     }
 

@@ -21,7 +21,10 @@
                 <span class="card-title" th:text="|${article.title}|"></span>
                 <p th:text="|Автор: ${article.author.getFullName()}|"></p>
                 <p th:text="|Дата: ${#dates.format(article.dateCreate,'dd-MM-yyyy HH:mm')}|"></p>
-                <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}"></a>
+                <p>
+                    <span th:text="|Категория: |">Категория: </span>
+                    <a th:href="@{'/categories/' + ${article.category.id}}" th:text="${article.category.name}">Категория</a>
+                </p>
                 <p th:text="|${article.content}|"></p>
             </div>
             <div class="card-action">
