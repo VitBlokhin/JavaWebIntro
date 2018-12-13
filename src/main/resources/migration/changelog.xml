@@ -11,6 +11,6 @@
 
     <include file="01_test_init_db.sql" relativeToChangelogFile="true"/>
     <include file="02_alter_articles_add_type.sql" relativeToChangelogFile="true"/>
-    <include file="03_insert_initial_category.sql" relativeToChangelogFile="true"/>
+    <include file="insert_initial_data.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

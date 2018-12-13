@@ -9,7 +9,7 @@ ArticleController.add = function () {
 };
 
 ArticleController.edit = function () {
-    sendRequest('#article-form', null, 'PATCH', request);
+    sendRequest('#article-form', null, null, reload);
 };
 
 ArticleController.show = function () {

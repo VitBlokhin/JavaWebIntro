@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col s12">
                     <a th:href="@{/articles}" class="breadcrumb">Заметки</a>
-                    <a th:href="@{${action}}"
+                    <a th:href="@{|${action}/${article.id}/edit|}"
                        th:text="${article.title}" class="breadcrumb">
                         Заметка
                     </a>

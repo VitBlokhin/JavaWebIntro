@@ -66,7 +66,7 @@ public class ArticleRestController {
         return articleService.create(articleWrapper).toString();
     }
 
-    @RequestMapping(method = RequestMethod.PATCH)
+    @RequestMapping(value = "", method = RequestMethod.PATCH)
     public String edit(@Valid ArticleWrapper articleWrapper, BindingResult bindingResult)
             throws InvalidDataException, NotFoundException, ServerException {
         if (bindingResult.hasErrors()) {

@@ -1,2 +1,0 @@
-INSERT INTO CATEGORIES (name, date_create)
-VALUES('Разное', CURRENT_TIMESTAMP);
