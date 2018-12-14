@@ -53,32 +53,6 @@ public class Article {
     @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
     private User author;
 
-//    @Getter(AccessLevel.NONE)
-//    @Setter(AccessLevel.NONE)
-//    @Column(name = "AUTHOR_ID")
-//    private Long authorId;
-
-//    @Getter(AccessLevel.NONE)
-//    @Setter(AccessLevel.NONE)
-//    @Column(name = "CATEGORY_ID")
-//    private Long categoryId;
-
-//    public Long getAuthorId() {
-//        return authorId;
-//    }
-//
-//    public void setAuthorId(Long authorId) {
-//        this.authorId = authorId;
-//    }
-
-//    public Long getCategoryId() {
-//        return categoryId;
-//    }
-//
-//    public void setCategoryId(Long categoryId) {
-//        this.categoryId = categoryId;
-//    }
-
     public Category getCategory() {
         return category;
     }

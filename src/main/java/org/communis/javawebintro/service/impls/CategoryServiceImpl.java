@@ -3,6 +3,7 @@ package org.communis.javawebintro.service.impls;
 import org.communis.javawebintro.dto.CategoryWrapper;
 import org.communis.javawebintro.dto.filters.ObjectFilter;
 import org.communis.javawebintro.entity.Category;
+import org.communis.javawebintro.enums.ArticleStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
@@ -80,6 +81,8 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.save(category);
 
             return category.getId();
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_UPDATE_ERROR), ex);
         }
@@ -95,10 +98,12 @@ public class CategoryServiceImpl implements CategoryService {
 
             category.getArticles().forEach(a -> {
                 // TODO: убрать категорию из обьявления или скрыть заметку?
-                //a.setStatus(ArticleStatus.HIDDEN);
+                a.setStatus(ArticleStatus.BLOCKED);
             });
 
             categoryRepository.save(category);
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.CATEGORY_DELETE_ERROR), ex);
         }

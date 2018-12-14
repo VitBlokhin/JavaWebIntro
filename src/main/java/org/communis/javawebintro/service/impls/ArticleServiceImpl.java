@@ -119,6 +119,8 @@ public class ArticleServiceImpl implements ArticleService {
             article.setStatus(ArticleStatus.DELETED);
 
             articleRepository.save(article);
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_DELETE_ERROR), ex);
         }
@@ -133,6 +135,8 @@ public class ArticleServiceImpl implements ArticleService {
             articleRepository.save(article);
 
             return article.getId();
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_SHOW_ERROR), ex);
         }
@@ -147,6 +151,8 @@ public class ArticleServiceImpl implements ArticleService {
             articleRepository.save(article);
 
             return article.getId();
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_HIDE_ERROR), ex);
         }
@@ -161,6 +167,8 @@ public class ArticleServiceImpl implements ArticleService {
             articleRepository.save(article);
 
             return article.getId();
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_BLOCK_ERROR), ex);
         }
@@ -175,6 +183,8 @@ public class ArticleServiceImpl implements ArticleService {
             articleRepository.save(article);
 
             return article.getId();
+        } catch (ServerException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_UNBLOCK_ERROR), ex);
         }
@@ -186,8 +196,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     private boolean validateArticle(ArticleWrapper articleWrapper) throws ServerException {
-        if (articleRepository.findFirstByTitleAndContent(articleWrapper.getTitle(), articleWrapper.getContent())
-                .isPresent()) {
+        Article article = articleRepository.findFirstByTitleAndContent(articleWrapper.getTitle(), articleWrapper.getContent());
+        if (article != null && !article.getId().equals(articleWrapper.getId())) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.ARTICLE_ALREADY_EXIST));
         }
 

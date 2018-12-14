@@ -15,7 +15,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
 
     Optional<Article> findFirstByContent(String content);
 
-    Optional<Article> findFirstByTitleAndContent(String title, String content);
+    Article findFirstByTitleAndContent(String title, String content);
 
     List<Article> findAllByAuthorId(Long id);
 }
